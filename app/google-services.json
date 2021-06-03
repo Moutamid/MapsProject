@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "162460674604",
+    "project_id": "maps-project-bb7b0",
+    "storage_bucket": "maps-project-bb7b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162460674604:android:8e322d50ae3591f40d7f89",
+        "android_client_info": {
+          "package_name": "com.moutamid.mapsproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "162460674604-om0p6dtf16rqvufdt30usjkgseq57j9h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq6uVyyvCbWEOeXAj_i1q3KZgeolbhzgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "162460674604-om0p6dtf16rqvufdt30usjkgseq57j9h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
