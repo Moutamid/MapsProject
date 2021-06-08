@@ -31,10 +31,20 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".ActivityLogin" />
+        <activity android:name=".ActivitySignUp" />
+        <activity android:name=".BottomNavigationActivity" />
+<!--            android:configChanges="uiMode"
+THIS LINE IS NECESSARY FOR DARK MODE WITH OUT ANIMATION
+        -->
+        <activity
+            android:name=".SplashActivity"
+            android:noHistory="true"
+            android:configChanges="uiMode"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
