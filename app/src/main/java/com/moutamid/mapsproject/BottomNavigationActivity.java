@@ -2,7 +2,7 @@ package com.moutamid.mapsproject;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,10 +13,10 @@ import com.google.firebase.auth.FirebaseAuth;
 public class BottomNavigationActivity extends AppCompatActivity {
     private static final String TAG = "BottomNavigationActivit";
 
-    private RelativeLayout profileTabBtn, homeTabBtn, settingsTabBtn;
+    private ImageView profileTabBtn, homeTabBtn, settingsTabBtn;
     private View homeViewLine, profileViewLine, settingsViewLine;
 
-    private RelativeLayout currentLayout;
+    private ImageView currentImageView;
     private View currentViewLine;
 
     private Utils utils = new Utils();
@@ -42,8 +42,8 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
         profileTabBtn = findViewById(R.id.profile_tab_button_bottom_navigation);
         homeTabBtn = findViewById(R.id.home_tab_button_bottom_navigation);
-        settingsTabBtn = findViewById(R.id.message_tab_button_bottom_navigation);
-        currentLayout = homeTabBtn;
+        settingsTabBtn = findViewById(R.id.settings_tab_button_bottom_navigation);
+        currentImageView = homeTabBtn;
 
         homeViewLine = findViewById(R.id.secline);
         profileViewLine = findViewById(R.id.firstline);
@@ -52,9 +52,9 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
         profileTabBtn.setOnClickListener(profileTabBtnClickListener());
         homeTabBtn.setOnClickListener(homeTabBtnClickListener());
-        settingsTabBtn.setOnClickListener(messageTabBtnClickListener());
+        settingsTabBtn.setOnClickListener(settingsTabBtnClickListener());
 
-        utils.storeString(BottomNavigationActivity.this, "current_fragment", "home");
+//        utils.storeString(BottomNavigationActivity.this, "current_fragment", "home");
 
         loadFragment(new HomeFragment());
 
@@ -130,19 +130,22 @@ public class BottomNavigationActivity extends AppCompatActivity {
 //
 //    }
 
-    private View.OnClickListener messageTabBtnClickListener() {
+    private View.OnClickListener settingsTabBtnClickListener() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentLayout.setBackgroundColor(0);
+//                currentImageView.setImageResource();
                 currentViewLine.setVisibility(View.INVISIBLE);
 
-                currentLayout = settingsTabBtn;
+//                currentImageView = settingsTabBtn;
                 currentViewLine = settingsViewLine;
 
-//                currentLayout.setBackgroundColor(getResources().getColor(R.color.tabbtnsbg));
+//                currentImageView.setImageResource(R.drawable.ic_outline_settings_24_selected);
                 currentViewLine.setVisibility(View.VISIBLE);
 
+                homeTabBtn.setImageResource(R.drawable.ic_outline_home_24_unselected);
+                profileTabBtn.setImageResource(R.drawable.ic_baseline_person_outline_24_unselected);
+                settingsTabBtn.setImageResource(R.drawable.ic_outline_settings_24_selected);
 //                utils.storeString(com.moutamid.tweetytheclone.BottomNavigationActivity.this, "current_fragment", "message");
 
                 loadFragment(new SettingsFragment());
@@ -154,15 +157,17 @@ public class BottomNavigationActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentLayout.setBackgroundColor(0);
+//                currentImageView.setBackgroundColor(0);
                 currentViewLine.setVisibility(View.INVISIBLE);
 
-                currentLayout = homeTabBtn;
+//                currentImageView = homeTabBtn;
                 currentViewLine = homeViewLine;
 
 //                currentLayout.setBackgroundColor(getResources().getColor(R.color.tabbtnsbg));
                 currentViewLine.setVisibility(View.VISIBLE);
-
+                homeTabBtn.setImageResource(R.drawable.ic_outline_home_24_selected);
+                profileTabBtn.setImageResource(R.drawable.ic_baseline_person_outline_24_unselected);
+                settingsTabBtn.setImageResource(R.drawable.ic_outline_settings_24_unselected);
 //                utils.storeString(com.moutamid.tweetytheclone.BottomNavigationActivity.this, "current_fragment", "home");
 
                 loadFragment(new HomeFragment());
@@ -175,15 +180,17 @@ public class BottomNavigationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                currentLayout.setBackgroundColor(0);
+//                currentImageView.setBackgroundColor(0);
                 currentViewLine.setVisibility(View.INVISIBLE);
-
-                currentLayout = profileTabBtn;
+//
+//                currentImageView = profileTabBtn;
                 currentViewLine = profileViewLine;
 
 //                currentLayout.setBackgroundColor(getResources().getColor(R.color.tabbtnsbg));
                 currentViewLine.setVisibility(View.VISIBLE);
-
+                homeTabBtn.setImageResource(R.drawable.ic_outline_home_24_unselected);
+                profileTabBtn.setImageResource(R.drawable.ic_person_outline_24_selected);
+                settingsTabBtn.setImageResource(R.drawable.ic_outline_settings_24_unselected);
 //                utils.storeString(com.moutamid.tweetytheclone.BottomNavigationActivity.this, "current_fragment", "profile");
 
                 loadFragment(new ProfileFragment());

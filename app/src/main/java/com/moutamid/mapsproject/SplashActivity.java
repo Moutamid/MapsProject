@@ -33,10 +33,10 @@ public class SplashActivity extends AppCompatActivity {
                 } else {
                     // USER IS SIGNED IN
 
-//                    Intent intent = new Intent(SplashActivity.this, BottomNavigationAcyivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    finish();
-//                    startActivity(intent);
+                    Intent intent = new Intent(SplashActivity.this, BottomNavigationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                    startActivity(intent);
                 }
             }
         }, 2000);

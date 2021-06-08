@@ -45,8 +45,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Geocoder geocoder;
     private int ACCESS_LOCATION_REQUEST_CODE = 10001;
-    FusedLocationProviderClient fusedLocationProviderClient;
-    LocationRequest locationRequest;
+//    FusedLocationProviderClient fusedLocationProviderClient;
+//    LocationRequest locationRequest;
 
 //    LatLng warongCheLatLng;
 //    MarkerOptions warongCheMarkerOptions;
@@ -62,12 +62,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         geocoder = new Geocoder(this);
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-        locationRequest = LocationRequest.create();
-        locationRequest.setInterval(500);
-        locationRequest.setFastestInterval(500);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+//
+//        locationRequest = LocationRequest.create();
+//        locationRequest.setInterval(500);
+//        locationRequest.setFastestInterval(500);
+//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         progressDialog = new ProgressDialog(context);
         progressDialog.setCancelable(false);
@@ -88,6 +88,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_LOCATION_REQUEST_CODE);
 
+        }
+
+        if (getIntent().hasExtra("live")) {
+
+            Toast.makeText(context, "LIVE", Toast.LENGTH_SHORT).show();
+
+//            mMap.animateCamera(mMap.getMyLocation());
+
+            return;
         }
 
         progressDialog.show();
@@ -139,13 +148,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+//            return;
         }
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+//        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
 
     private void stopLocationUpdates() {
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+//        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
 
     private static class LocationModel {

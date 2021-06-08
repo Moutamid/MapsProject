@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.moutamid.mapsproject">
-
-    <!--
-         Ye dono permissions zaruri hen location access krne k lie
-    -->
+    <!--          Ye dono permissions zaruri hen location access krne k lie -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -15,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MapsProject">
-
+        <activity android:name=".SecondRegistrationActivity"></activity>
         <!--
              GOOGLE MAPS KI API KEY APKO IS FILE MEN NAZAR AA JAEGI
              (See the file "res/values/google_maps_api.xml").
@@ -30,21 +27,23 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".MainActivity"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".ActivityLogin" />
         <activity android:name=".ActivitySignUp" />
         <activity android:name=".BottomNavigationActivity" />
-<!--            android:configChanges="uiMode"
+        <!--
+            android:configChanges="uiMode"
 THIS LINE IS NECESSARY FOR DARK MODE WITH OUT ANIMATION
         -->
         <activity
             android:name=".SplashActivity"
-            android:noHistory="true"
             android:configChanges="uiMode"
+            android:noHistory="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

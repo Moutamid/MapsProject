@@ -85,13 +85,13 @@ public class ActivityLogin extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            getUserdetails();
                         } else {
                             progressDialog.dismiss();
                             Toast.makeText(ActivityLogin.this, "Google sign in failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            updateUI(null);
+
                         }
                     }
                 });
@@ -221,22 +221,33 @@ public class ActivityLogin extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-//                        if (!snapshot.exists()){
-//                            return;
-//                        }
-//
-//                        new Utils().storeString(ActivityLogin.this,
-//                                "usernameStr", snapshot.child("name").getValue(String.class));
-//
-//                        new Utils().storeString(ActivityLogin.this,
-//                                "profileUrl", snapshot.child("profileUrl").getValue(String.class));
+                        if (!snapshot.exists()){
+                            finish();
+                            Intent intent = new Intent(ActivityLogin.this, SecondRegistrationActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            return;
+                        }
+
+                        UserDetails details = snapshot.getValue(UserDetails.class);
+
+                        Utils utils = new Utils();
+
+                        utils.storeString(ActivityLogin.this,
+                                "usernameStr", details.getName());
+                        utils.storeString(ActivityLogin.this,
+                                "numberStr", details.getNumber());
+                        utils.storeString(ActivityLogin.this,
+                                "emailStr", details.getEmail());
+                        utils.storeString(ActivityLogin.this,
+                                "addressStr", details.getAddress());
 
                         progressDialog.dismiss();
 
-//                        finish();
-//                        Intent intent = new Intent(ActivityLogin.this, BottomNavigationActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        startActivity(intent);
+                        finish();
+                        Intent intent = new Intent(ActivityLogin.this, BottomNavigationActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
 
                         Toast.makeText(ActivityLogin.this, "You are logged in!", Toast.LENGTH_SHORT).show();
 
@@ -256,6 +267,53 @@ public class ActivityLogin extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password_edittext_activity_login);
         loginBtn = findViewById(R.id.login_btn_activity_login);
         loginBtn.setOnClickListener(loginBtnListener());
+    }
+
+    private static class UserDetails {
+
+        private String name, number, address, email;
+
+        public UserDetails(String name, String number, String address, String email) {
+            this.name = name;
+            this.number = number;
+            this.address = address;
+            this.email = email;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getNumber() {
+            return number;
+        }
+
+        public void setNumber(String number) {
+            this.number = number;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        UserDetails() {
+        }
     }
 
 }

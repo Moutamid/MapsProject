@@ -27,7 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class ActivitySignUp extends AppCompatActivity {
     private static final String TAG = "ActivitySignUp";
 
-    private EditText userNameEditText, emailEditText, passwordEditText, confirmPasswordEditText;
+    private EditText userNameEditText, emailEditText, passwordEditText, confirmPasswordEditText, numberEditText, addressEditText;
     private Button signUpBtn;
 
     private ProgressDialog mDialog;
@@ -42,7 +42,7 @@ public class ActivitySignUp extends AppCompatActivity {
 
     private String passwordStr;
 
-    private String confirmedPasswordStr;
+    private String confirmedPasswordStr, numberStr, addressStr;
 
 
     @Override
@@ -101,6 +101,22 @@ public class ActivitySignUp extends AppCompatActivity {
         emailStr = emailEditText.getText().toString();
         passwordStr = passwordEditText.getText().toString();
         confirmedPasswordStr = confirmPasswordEditText.getText().toString();
+        numberStr = numberEditText.getText().toString();
+        addressStr = addressEditText.getText().toString();
+
+        if (TextUtils.isEmpty(addressStr)) {
+            mDialog.dismiss();
+            addressEditText.setError("Address is empty");
+            addressEditText.requestFocus();
+            return;
+        }
+
+        if (TextUtils.isEmpty(numberStr)) {
+            mDialog.dismiss();
+            numberEditText.setError("Number is empty");
+            numberEditText.requestFocus();
+            return;
+        }
 
         if (TextUtils.isEmpty(userNameStr)) {
             mDialog.dismiss();
@@ -189,7 +205,14 @@ public class ActivitySignUp extends AppCompatActivity {
 
     private static class UserDetails {
 
-        private String name, email, profileUrl;
+        private String name, number, address, email;
+
+        public UserDetails(String name, String number, String address, String email) {
+            this.name = name;
+            this.number = number;
+            this.address = address;
+            this.email = email;
+        }
 
         public String getName() {
             return name;
@@ -199,26 +222,28 @@ public class ActivitySignUp extends AppCompatActivity {
             this.name = name;
         }
 
+        public String getNumber() {
+            return number;
+        }
+
+        public void setNumber(String number) {
+            this.number = number;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
         public String getEmail() {
             return email;
         }
 
         public void setEmail(String email) {
             this.email = email;
-        }
-
-        public String getProfileUrl() {
-            return profileUrl;
-        }
-
-        public void setProfileUrl(String profileUrl) {
-            this.profileUrl = profileUrl;
-        }
-
-        public UserDetails(String name, String email, String profileUrl) {
-            this.name = name;
-            this.email = email;
-            this.profileUrl = profileUrl;
         }
 
         UserDetails() {
@@ -230,7 +255,8 @@ public class ActivitySignUp extends AppCompatActivity {
         UserDetails userDetails = new UserDetails();
         userDetails.setEmail(emailStr);
         userDetails.setName(userNameStr);
-        userDetails.setProfileUrl("Error");
+        userDetails.setNumber(numberStr);
+        userDetails.setAddress(addressStr);
 
         mDatabaseUsers.child("users").child(mAuth.getCurrentUser().getUid())
                 .setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -238,9 +264,16 @@ public class ActivitySignUp extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
 
                 if (task.isSuccessful()) {
+                    Utils utils = new Utils();
 
-                    new Utils().storeString(ActivitySignUp.this,
+                    utils.storeString(ActivitySignUp.this,
                             "usernameStr", userNameStr);
+                    utils.storeString(ActivitySignUp.this,
+                            "numberStr", numberStr);
+                    utils.storeString(ActivitySignUp.this,
+                            "emailStr", emailStr);
+                    utils.storeString(ActivitySignUp.this,
+                            "addressStr", addressStr);
 
                     mDialog.dismiss();
 
@@ -269,6 +302,8 @@ public class ActivitySignUp extends AppCompatActivity {
         emailEditText = findViewById(R.id.email_edittext_activity_sign_up);
         passwordEditText = findViewById(R.id.password_edittext_activity_sign_up);
         confirmPasswordEditText = findViewById(R.id.confirm_password_edittext_activity_sign_up);
+        numberEditText = findViewById(R.id.number_edittext_activity_sign_up);
+        addressEditText = findViewById(R.id.address_edittext_activity_sign_up);
 
         signUpBtn = findViewById(R.id.create_btn_activity_sign_up);
         signUpBtn.setOnClickListener(signUpBtnListener());
