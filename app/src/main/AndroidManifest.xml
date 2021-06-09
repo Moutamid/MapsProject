@@ -3,6 +3,7 @@
     package="com.moutamid.mapsproject">
     <!-- Ye dono permissions zaruri hen location access krne k lie -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
@@ -12,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MapsProject">
-        <activity android:name=".ViewSubmissionsActivity"></activity>
+        <activity android:name=".HideAppActivity"></activity>
+        <activity android:name=".ViewSubmissionsActivity" />
         <activity android:name=".SecondRegistrationActivity" />
         <!--
              GOOGLE MAPS KI API KEY APKO IS FILE MEN NAZAR AA JAEGI
@@ -48,6 +50,13 @@ THIS LINE IS NECESSARY FOR DARK MODE WITH OUT ANIMATION
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".MyBroadCastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

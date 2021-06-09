@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -321,6 +322,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
 //                Toast.makeText(MapsActivity.this, "onSuccess", Toast.LENGTH_SHORT).show();
 //                mMap.addMarker(new MarkerOptions().position(latLng));
+            }
+        });
+
+        locationTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
