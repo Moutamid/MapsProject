@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:top="0dp"
-        android:right="0dp"
+    <item
         android:bottom="0dp"
+        android:drawable="@drawable/bg_grid_layout_home"
         android:left="0dp"
-        android:drawable="@drawable/bg_splash_image">
-    </item>
+        android:right="0dp"
+        android:top="0dp" />
 
-<!--    <item-->
-<!--        android:drawable="@drawable/ic_audiotrack_black_24dp"-->
-<!--        android:gravity="center"-->
-<!--        android:width="100dp"-->
-<!--        android:height="100dp">-->
-<!--    </item>-->
+    <item
+        android:drawable="@drawable/bg_splash"
+        android:gravity="center"
+        android:left="0dp"
+        android:right="0dp" />
 
 </layer-list>
