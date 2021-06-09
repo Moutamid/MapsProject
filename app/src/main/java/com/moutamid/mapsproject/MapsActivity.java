@@ -8,11 +8,17 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -25,14 +31,21 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final String TAG = "MapsActivity";
@@ -43,10 +56,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
-    private Geocoder geocoder;
+    private Button shareLocationBtn;
+
     private int ACCESS_LOCATION_REQUEST_CODE = 10001;
-//    FusedLocationProviderClient fusedLocationProviderClient;
-//    LocationRequest locationRequest;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    LocationRequest locationRequest;
 
 //    LatLng warongCheLatLng;
 //    MarkerOptions warongCheMarkerOptions;
@@ -60,18 +74,66 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        geocoder = new Geocoder(this);
+        shareLocationBtn = findViewById(R.id.share_location_btn_live);
+        shareLocationBtn.setOnClickListener(shareLocationBtnCLickListener());
 
-//        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-//
-//        locationRequest = LocationRequest.create();
-//        locationRequest.setInterval(500);
-//        locationRequest.setFastestInterval(500);
-//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(500);
+        locationRequest.setFastestInterval(500);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         progressDialog = new ProgressDialog(context);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading...");
+
+    }
+
+    private View.OnClickListener shareLocationBtnCLickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(context, "Permission not granted!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                progressDialog.show();
+                Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+                locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        sendLocation(location);
+                    }
+                });
+
+                locationTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        };
+    }
+
+    private void sendLocation(Location currentLocation) {
+
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
+        String smsBody = "http://maps.google.com?q=" +
+                currentLocation.getLatitude() +
+                "," +
+                currentLocation.getLongitude();
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, smsBody);
+        progressDialog.dismiss();
+        startActivity(Intent.createChooser(intent, "Share using"));
+
     }
 
     private ProgressDialog progressDialog;
@@ -85,6 +147,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             enableUserLocation();
+//            zoomToUserLocation();
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_LOCATION_REQUEST_CODE);
 
@@ -92,14 +155,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (getIntent().hasExtra("live")) {
 
-            Toast.makeText(context, "LIVE", Toast.LENGTH_SHORT).show();
-
-//            mMap.animateCamera(mMap.getMyLocation());
+            shareLocationBtn.setVisibility(View.VISIBLE);
+            zoomToUserLocation();
 
             return;
         }
 
         progressDialog.show();
+
+        CircleOptions circleOptions = new CircleOptions();
+        circleOptions.strokeWidth(4);
+        circleOptions.strokeColor(Color.argb(255, 0, 255, 0));
+        circleOptions.fillColor(Color.argb(12, 0, 255, 0));
+        circleOptions.radius(5000);
 
         // SARI LOCATIONS RETRIEVE HONGI ONLINE TAKAY MAPS PAR MARKERS ADD KIE JAA SKEN
         databaseReference.child("locations").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -118,9 +186,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     mMap.addMarker(markerOptions).showInfoWindow();
 
+                    circleOptions.center(latLng);
+                    mMap.addCircle(circleOptions);
+
                 }
 
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16);//25
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12);//25
                 mMap.animateCamera(cameraUpdate);
                 progressDialog.dismiss();
             }
@@ -159,14 +230,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static class LocationModel {
 
-        private String name, dateTime;
+        private String name, dateTime, cityName;
         private double latitude, longitude;
 
-        public LocationModel(String name, String dateTime, double latitude, double longitude) {
+        public LocationModel(String name, String dateTime, String cityName, double latitude, double longitude) {
             this.name = name;
             this.dateTime = dateTime;
+            this.cityName = cityName;
             this.latitude = latitude;
             this.longitude = longitude;
+        }
+
+        public String getCityName() {
+            return cityName;
+        }
+
+        public void setCityName(String cityName) {
+            this.cityName = cityName;
         }
 
         public String getDateTime() {
@@ -229,5 +309,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
     }
 
+    private void zoomToUserLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+//                Toast.makeText(MapsActivity.this, "onSuccess", Toast.LENGTH_SHORT).show();
+//                mMap.addMarker(new MarkerOptions().position(latLng));
+            }
+        });
+    }
 
 }

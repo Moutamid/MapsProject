@@ -33,7 +33,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 //        if (firebaseAuth.getCurrentUser() == null) {
 //            finish();
-//            Intent intent = new Intent(com.moutamid.tweetytheclone.BottomNavigationActivity.this, MainActivity.class);
+//            Intent intent = new Intent(com.moutamid.tweetytheclone.BottomNavigationActivity.this, SubmitReportsActivity.class);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //            finish();
 //            startActivity(intent);

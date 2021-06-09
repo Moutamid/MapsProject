@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.moutamid.mapsproject">
-    <!--          Ye dono permissions zaruri hen location access krne k lie -->
+    <!-- Ye dono permissions zaruri hen location access krne k lie -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MapsProject">
-        <activity android:name=".SecondRegistrationActivity"></activity>
+        <activity android:name=".ViewSubmissionsActivity"></activity>
+        <activity android:name=".SecondRegistrationActivity" />
         <!--
              GOOGLE MAPS KI API KEY APKO IS FILE MEN NAZAR AA JAEGI
              (See the file "res/values/google_maps_api.xml").
@@ -28,7 +29,7 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".SubmitReportsActivity" />
         <activity android:name=".ActivityLogin" />
         <activity android:name=".ActivitySignUp" />
         <activity android:name=".BottomNavigationActivity" />
