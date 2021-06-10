@@ -94,9 +94,9 @@ public class SubmitReportsActivity extends AppCompatActivity {
         viewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SubmitReportsActivity.this, ViewSubmissionsActivity.class));
             }
         });
+        viewButton.setVisibility(View.GONE);
     }
 
     private String cityName = "null";

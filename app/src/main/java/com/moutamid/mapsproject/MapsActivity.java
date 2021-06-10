@@ -166,8 +166,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.strokeWidth(4);
-        circleOptions.strokeColor(Color.argb(255, 0, 255, 0));
-        circleOptions.fillColor(Color.argb(12, 0, 255, 0));
+        circleOptions.strokeColor(Color.argb(255, 255, 0, 0));
+        circleOptions.fillColor(Color.argb(12, 255, 0, 0));
         circleOptions.radius(5000);
 
         // SARI LOCATIONS RETRIEVE HONGI ONLINE TAKAY MAPS PAR MARKERS ADD KIE JAA SKEN

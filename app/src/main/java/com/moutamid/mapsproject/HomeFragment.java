@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
 import android.provider.Settings;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -45,7 +47,27 @@ public class HomeFragment extends Fragment {
         rootView.findViewById(R.id.reports_layout_home).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), SubmitReportsActivity.class));
+
+                PopupMenu popupMenu = new PopupMenu(getActivity(), view);
+                popupMenu.getMenuInflater().inflate(
+                        R.menu.report_pop_up_options,
+                        popupMenu.getMenu()
+                );
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        if (menuItem.getItemId() == R.id.new_report) {
+                            startActivity(new Intent(getActivity(), SubmitReportsActivity.class));
+                        }
+
+                        if (menuItem.getItemId() == R.id.view_submissions) {
+                            startActivity(new Intent(getActivity(), ViewSubmissionsActivity.class));
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+
             }
         });
 
