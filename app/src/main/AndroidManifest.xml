@@ -3,6 +3,7 @@
     package="com.moutamid.mapsproject">
     <!-- Ye dono permissions zaruri hen location access krne k lie -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 

@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="Phone number 3"
-            android:inputType="text"
+            android:inputType="number"
             android:textColor="@color/black" />
 
         <androidx.appcompat.widget.AppCompatButton

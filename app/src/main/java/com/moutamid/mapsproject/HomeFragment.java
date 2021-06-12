@@ -114,16 +114,47 @@ public class HomeFragment extends Fragment {
                 Context context = getActivity();
                 // LOCATION ACCESS KRNE K LIE PEHLE USER SE PERMISSION LENI HOGI
                 Dexter.withContext(context)
-                        .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                        .withPermission(Manifest.permission.SEND_SMS)
                         .withListener(new PermissionListener() {
                             @Override
                             public void onPermissionGranted(PermissionGrantedResponse response) {
                                 Dexter.withContext(context)
-                                        .withPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                                        .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                                         .withListener(new PermissionListener() {
                                             @Override
                                             public void onPermissionGranted(PermissionGrantedResponse response) {
-                                                shareLocationAndMsg();
+                                                Dexter.withContext(context)
+                                                        .withPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                                                        .withListener(new PermissionListener() {
+                                                            @Override
+                                                            public void onPermissionGranted(PermissionGrantedResponse response) {
+                                                                shareLocationAndMsg();
+                                                            }
+
+                                                            @Override
+                                                            public void onPermissionDenied(PermissionDeniedResponse response) {
+                                                                if (response.isPermanentlyDenied()) {
+                                                                    // open device settings when the permission is
+                                                                    // denied permanently
+                                                                    Toast.makeText(context, "You need to provide permission!", Toast.LENGTH_SHORT).show();
+
+                                                                    Intent intent = new Intent();
+                                                                    intent.setAction(
+                                                                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                                                    Uri uri = Uri.fromParts("package",
+                                                                            BuildConfig.APPLICATION_ID, null);
+                                                                    intent.setData(uri);
+                                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    startActivity(intent);
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                                                                token.continuePermissionRequest();
+                                                            }
+                                                        }).check();
+
                                             }
 
                                             @Override
@@ -220,6 +251,7 @@ public class HomeFragment extends Fragment {
                 smsIntent.setDataAndType(Uri.parse("smsto:"),
                         "vnd.android-dir/mms-sms");
 //                smsIntent.setData().setType();
+//                smsIntent.setType("vnd.android-dir/mms-sms");
                 smsIntent.putExtra("address", nums);
 
                 String smsBody = "Please help me! I'm in trouble. I'm here, " +
@@ -228,14 +260,18 @@ public class HomeFragment extends Fragment {
 
                 smsIntent.putExtra("sms_body", smsBody);
 
+                progressDialog.dismiss();
+
                 try {
                     startActivity(smsIntent);
                 } catch (android.content.ActivityNotFoundException ex) {
-                    Toast.makeText(context,
-                            "SMS failed, please try again later.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
+                    intent.putExtra(android.content.Intent.EXTRA_TEXT, smsBody);
+                    startActivity(Intent.createChooser(intent, "Share using"));
                 }
-
-                progressDialog.dismiss();
             }
         });
 
