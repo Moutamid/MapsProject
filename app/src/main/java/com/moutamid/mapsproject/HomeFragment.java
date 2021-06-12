@@ -1,12 +1,17 @@
 package com.moutamid.mapsproject;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.Settings;
@@ -17,6 +22,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -32,7 +43,8 @@ public class HomeFragment extends Fragment {
 
     private View rootView;
     private Utils utils = new Utils();
-
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationRequest locationRequest;
 //    private LinearLayout liveLocationLayout;
 
     @Override
@@ -44,6 +56,16 @@ public class HomeFragment extends Fragment {
 
         setLiveLocationBtn();
 
+        setReportsBtn();
+
+        setHideBtn();
+
+        setAlertBtn();
+
+        return rootView;
+    }
+
+    private void setReportsBtn() {
         rootView.findViewById(R.id.reports_layout_home).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,10 +100,127 @@ public class HomeFragment extends Fragment {
 
             }
         });
+    }
 
-        setHideBtn();
+    private ProgressDialog progressDialog;
 
-        return rootView;
+    private void setAlertBtn() {
+
+        rootView.findViewById(R.id.alert_btn_home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = getActivity();
+                // LOCATION ACCESS KRNE K LIE PEHLE USER SE PERMISSION LENI HOGI
+                Dexter.withContext(context)
+                        .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                        .withListener(new PermissionListener() {
+                            @Override
+                            public void onPermissionGranted(PermissionGrantedResponse response) {
+                                Dexter.withContext(context)
+                                        .withPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                                        .withListener(new PermissionListener() {
+                                            @Override
+                                            public void onPermissionGranted(PermissionGrantedResponse response) {
+                                                shareLocationAndMsg();
+                                            }
+
+                                            @Override
+                                            public void onPermissionDenied(PermissionDeniedResponse response) {
+                                                if (response.isPermanentlyDenied()) {
+                                                    // open device settings when the permission is
+                                                    // denied permanently
+                                                    Toast.makeText(context, "You need to provide permission!", Toast.LENGTH_SHORT).show();
+
+                                                    Intent intent = new Intent();
+                                                    intent.setAction(
+                                                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                                    Uri uri = Uri.fromParts("package",
+                                                            BuildConfig.APPLICATION_ID, null);
+                                                    intent.setData(uri);
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    startActivity(intent);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                                                token.continuePermissionRequest();
+                                            }
+                                        }).check();
+
+                            }
+
+                            @Override
+                            public void onPermissionDenied(PermissionDeniedResponse response) {
+                                if (response.isPermanentlyDenied()) {
+                                    // open device settings when the permission is
+                                    // denied permanently
+                                    Toast.makeText(context, "You need to provide permission!", Toast.LENGTH_SHORT).show();
+
+                                    Intent intent = new Intent();
+                                    intent.setAction(
+                                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package",
+                                            BuildConfig.APPLICATION_ID, null);
+                                    intent.setData(uri);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }
+                            }
+
+                            @Override
+                            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                                token.continuePermissionRequest();
+                            }
+                        }).check();
+
+            }
+        });
+
+    }
+
+    private void shareLocationAndMsg() {
+        Context context = getActivity();
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(500);
+        locationRequest.setFastestInterval(500);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading...");
+
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(context, "Permission not granted!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        progressDialog.show();
+        Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+
+              String smsBody =
+                      "http://maps.google.com?q=" + location.getLatitude() +
+                        "," + location.getLongitude();
+
+
+
+                progressDialog.dismiss();
+            }
+        });
+
+        locationTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void setHideBtn() {

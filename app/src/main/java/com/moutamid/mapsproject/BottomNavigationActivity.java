@@ -2,11 +2,13 @@ package com.moutamid.mapsproject;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -22,7 +24,6 @@ public class BottomNavigationActivity extends AppCompatActivity {
     private View currentViewLine;
 
     private Utils utils = new Utils();
-    private static final String TAG = "BottomNavigationActivit";
     private Context context = BottomNavigationActivity.this;
 //    private HomeFragment homeFragment;
 //    private ProfileFragment profileFragment;
@@ -42,26 +43,6 @@ public class BottomNavigationActivity extends AppCompatActivity {
 //            startActivity(intent);
 //            return;
 //        }
-
-        if (!utils.getStoredBoolean(context, "emer")) {
-            utils.showDialog(context,
-                    "Add your emergency contacts!",
-                    "This will enable you to send your GPS information and a pre-programmed message to these contacts in case of emergency.",
-                    "Add",
-                    "",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                            //dialogInterface.dismiss();
-                        }
-                    }, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            dialogInterface.dismiss();
-                        }
-                    }, false);
-        }
 
         profileTabBtn = findViewById(R.id.profile_tab_button_bottom_navigation);
         homeTabBtn = findViewById(R.id.home_tab_button_bottom_navigation);
@@ -93,9 +74,45 @@ public class BottomNavigationActivity extends AppCompatActivity {
 //        }
 
 //        listenForProfileImageChanges();
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setMessage("This will enable you to send your GPS information and a pre-programmed message to these contacts in case of emergency.");
+        builder1.setCancelable(false);
+        builder1.setTitle("Add your emergency contacts!");
+        builder1.setPositiveButton(
+                "Add",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        startActivity(new Intent(context, AddEmergencyActivity.class));
+                    }
+                });
+
+//        builder1.setNegativeButton(
+//                "No",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
+
+        alert11 = builder1.create();
     }
 
-//    private void listenForProfileImageChanges() {
+    private AlertDialog alert11;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!utils.getStoredBoolean(context, "emer")) {
+            alert11.show();
+        } else {
+            if (alert11.isShowing())
+                alert11.dismiss();
+        }
+    }
+
+    //    private void listenForProfileImageChanges() {
 //
 //        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 //

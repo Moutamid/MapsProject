@@ -60,8 +60,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button shareLocationBtn;
 
     private int ACCESS_LOCATION_REQUEST_CODE = 10001;
-    FusedLocationProviderClient fusedLocationProviderClient;
-    LocationRequest locationRequest;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationRequest locationRequest;
 
 //    LatLng warongCheLatLng;
 //    MarkerOptions warongCheMarkerOptions;

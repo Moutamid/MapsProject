@@ -11,6 +11,8 @@ import android.widget.Toast;
 public class AddEmergencyActivity extends AppCompatActivity {
     private static final String TAG = "AddEmergencyActivity";
     private Context context = AddEmergencyActivity.this;
+    private Utils utils = new Utils();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,20 @@ public class AddEmergencyActivity extends AppCompatActivity {
                     Toast.makeText(AddEmergencyActivity.this, "Please add at least 1 Emergency number!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                if (!number1.isEmpty()) {
+                    utils.storeString(context, "number1", number1);
+                }
+                if (!number2.isEmpty()) {
+                    utils.storeString(context, "number1", number2);
+                }
+                if (!number3.isEmpty()) {
+                    utils.storeString(context, "number1", number3);
+                }
+
+                utils.storeBoolean(context, "emer", true);
+
+                finish();
 
             }
         });

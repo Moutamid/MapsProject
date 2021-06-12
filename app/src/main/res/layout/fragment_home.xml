@@ -261,7 +261,7 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/create_btn_activity_sign_up"
+            android:id="@+id/alert_btn_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
