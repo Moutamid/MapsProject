@@ -35,6 +35,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.util.ArrayList;
+
 public class HomeFragment extends Fragment {
 
     public HomeFragment() {
@@ -203,11 +205,35 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(Location location) {
 
-              String smsBody =
-                      "http://maps.google.com?q=" + location.getLatitude() +
+                ArrayList<String> nums = new ArrayList<String>();
+
+                if (!utils.getStoredString(context, "number1").equals("Error"))
+                    nums.add(utils.getStoredString(context, "number1"));
+
+                if (!utils.getStoredString(context, "number2").equals("Error"))
+                    nums.add(utils.getStoredString(context, "number2"));
+
+                if (!utils.getStoredString(context, "number3").equals("Error"))
+                    nums.add(utils.getStoredString(context, "number3"));
+
+                Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+                smsIntent.setDataAndType(Uri.parse("smsto:"),
+                        "vnd.android-dir/mms-sms");
+//                smsIntent.setData().setType();
+                smsIntent.putExtra("address", nums);
+
+                String smsBody = "Please help me! I'm in trouble. I'm here, " +
+                        "http://maps.google.com?q=" + location.getLatitude() +
                         "," + location.getLongitude();
 
+                smsIntent.putExtra("sms_body", smsBody);
 
+                try {
+                    startActivity(smsIntent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(context,
+                            "SMS failed, please try again later.", Toast.LENGTH_SHORT).show();
+                }
 
                 progressDialog.dismiss();
             }

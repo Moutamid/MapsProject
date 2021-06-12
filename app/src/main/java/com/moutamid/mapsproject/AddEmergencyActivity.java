@@ -39,10 +39,10 @@ public class AddEmergencyActivity extends AppCompatActivity {
                     utils.storeString(context, "number1", number1);
                 }
                 if (!number2.isEmpty()) {
-                    utils.storeString(context, "number1", number2);
+                    utils.storeString(context, "number2", number2);
                 }
                 if (!number3.isEmpty()) {
-                    utils.storeString(context, "number1", number3);
+                    utils.storeString(context, "number3", number3);
                 }
 
                 utils.storeBoolean(context, "emer", true);
