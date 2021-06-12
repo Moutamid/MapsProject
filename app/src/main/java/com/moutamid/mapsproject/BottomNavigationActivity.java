@@ -1,5 +1,7 @@
 package com.moutamid.mapsproject;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,7 +22,8 @@ public class BottomNavigationActivity extends AppCompatActivity {
     private View currentViewLine;
 
     private Utils utils = new Utils();
-
+    private static final String TAG = "BottomNavigationActivit";
+    private Context context = BottomNavigationActivity.this;
 //    private HomeFragment homeFragment;
 //    private ProfileFragment profileFragment;
 //    private ChatFragment chatFragment;
@@ -39,6 +42,26 @@ public class BottomNavigationActivity extends AppCompatActivity {
 //            startActivity(intent);
 //            return;
 //        }
+
+        if (!utils.getStoredBoolean(context, "emer")) {
+            utils.showDialog(context,
+                    "Add your emergency contacts!",
+                    "This will enable you to send your GPS information and a pre-programmed message to these contacts in case of emergency.",
+                    "Add",
+                    "",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            //dialogInterface.dismiss();
+                        }
+                    }, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            dialogInterface.dismiss();
+                        }
+                    }, false);
+        }
 
         profileTabBtn = findViewById(R.id.profile_tab_button_bottom_navigation);
         homeTabBtn = findViewById(R.id.home_tab_button_bottom_navigation);
