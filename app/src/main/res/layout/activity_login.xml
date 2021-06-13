@@ -13,7 +13,7 @@
         android:layout_height="130dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:src="@drawable/ic_launcher_background" />
+        android:src="@drawable/map" />
 
     <LinearLayout
         android:id="@+id/textlogintop"

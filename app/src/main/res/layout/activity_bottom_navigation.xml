@@ -90,7 +90,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:padding="10dp"
-                android:src="@drawable/ic_outline_settings_24_unselected" />
+                android:src="@drawable/ic_baseline_share_24" />
 
             <View
                 android:id="@+id/thirdline"

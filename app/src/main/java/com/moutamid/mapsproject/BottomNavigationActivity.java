@@ -174,21 +174,21 @@ public class BottomNavigationActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                currentImageView.setImageResource();
-                currentViewLine.setVisibility(View.INVISIBLE);
 
-//                currentImageView = settingsTabBtn;
-                currentViewLine = settingsViewLine;
+                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
+                String smsBody = "https://play.google.com/store/apps/details?id=com.urbandroid.sleep";
+                intent.putExtra(android.content.Intent.EXTRA_TEXT, smsBody);
+                startActivity(Intent.createChooser(intent, "Share using"));
 
-//                currentImageView.setImageResource(R.drawable.ic_outline_settings_24_selected);
-                currentViewLine.setVisibility(View.VISIBLE);
-
-                homeTabBtn.setImageResource(R.drawable.ic_outline_home_24_unselected);
-                profileTabBtn.setImageResource(R.drawable.ic_baseline_person_outline_24_unselected);
-                settingsTabBtn.setImageResource(R.drawable.ic_outline_settings_24_selected);
-//                utils.storeString(com.moutamid.tweetytheclone.BottomNavigationActivity.this, "current_fragment", "message");
-
-                loadFragment(new SettingsFragment());
+//                currentViewLine.setVisibility(View.INVISIBLE);
+//                currentViewLine = settingsViewLine;
+//                currentViewLine.setVisibility(View.VISIBLE);
+//                homeTabBtn.setImageResource(R.drawable.ic_outline_home_24_unselected);
+//                profileTabBtn.setImageResource(R.drawable.ic_baseline_person_outline_24_unselected);
+//                settingsTabBtn.setImageResource(R.drawable.ic_outline_settings_24_selected);
+//                loadFragment(new SettingsFragment());
             }
         };
     }
