@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -261,23 +264,43 @@ public class SubmitReportsActivity extends AppCompatActivity {
                     return;
                 }
 
-                progressDialog.show();
+                Dialog dialog = new Dialog(SubmitReportsActivity.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.dialog_rating);
+                dialog.setCancelable(true);
+                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                layoutParams.copyFrom(dialog.getWindow().getAttributes());
+                layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
-                LocationModel model = new LocationModel(nameString, dateTimeString, cityName, latitude, longitude);
-
-                databaseReference.child("locations").push()
-                        .setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+                dialog.findViewById(R.id.submitBtn).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        progressDialog.dismiss();
-                        if (task.isSuccessful()) {
-                            nameEditText.setText("");
-                            Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    public void onClick(View view) {
+                        // CODE HERE
+                        progressDialog.show();
+
+                        LocationModel model = new LocationModel(nameString, dateTimeString, cityName, latitude, longitude);
+
+                        databaseReference.child("locations").push()
+                                .setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                progressDialog.dismiss();
+                                dialog.dismiss();
+
+                                if (task.isSuccessful()) {
+                                    nameEditText.setText("");
+                                    Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
                     }
                 });
+                dialog.show();
+                dialog.getWindow().setAttributes(layoutParams);
             }
         });
     }

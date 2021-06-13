@@ -9,11 +9,10 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:padding="20dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/ic_launcher_background" />
 
     <LinearLayout
@@ -30,7 +29,7 @@
             android:gravity="center"
             android:text="Welcome back!"
             android:textColor="#000000"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -38,13 +37,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
             android:gravity="center"
             android:text="Log in to your existing account"
             android:textColor="@color/greyishblue"
-            android:textSize="20sp" />
+            android:textSize="17sp" />
 
     </LinearLayout>
 
@@ -52,23 +50,25 @@
         android:id="@+id/loginlinearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/bottomLayout_login"
         android:layout_below="@id/textlogintop"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/bg_all_edittext_sign_up"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/bg_edittext_unclicked_sign_up"
             android:orientation="horizontal"
-            android:padding="20dp">
+            android:padding="10dp">
 
             <ImageView
                 android:layout_width="17dp"
@@ -91,17 +91,17 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/bg_edittext_unclicked_sign_up"
             android:orientation="horizontal"
-            android:padding="20dp">
+            android:padding="10dp">
 
             <ImageView
                 android:layout_width="17dp"
@@ -128,6 +128,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/bottomLayout_login"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
@@ -153,15 +154,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:gravity="center"
                 android:text="OR"
                 android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/google_btn_activity_login"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/google_plus" />
 
@@ -171,7 +172,8 @@
             android:id="@+id/signBtn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="or SIGN UP"
             android:textColor="#000000"
