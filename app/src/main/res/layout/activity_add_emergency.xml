@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:hint="Phone number 1"
+            android:hint="Phone number 1 (923...)"
             android:inputType="number"
             android:textColor="@color/black" />
 
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Phone number 2"
+            android:hint="Phone number 2 (923...)"
             android:inputType="number"
             android:textColor="@color/black" />
 
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Phone number 3"
+            android:hint="Phone number 3 (923...)"
             android:inputType="number"
             android:textColor="@color/black" />
 

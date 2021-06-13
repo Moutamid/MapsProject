@@ -220,20 +220,15 @@ public class BottomNavigationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-//                currentImageView.setBackgroundColor(0);
-                currentViewLine.setVisibility(View.INVISIBLE);
-//
-//                currentImageView = profileTabBtn;
-                currentViewLine = profileViewLine;
+                startActivity(new Intent(BottomNavigationActivity.this, SecondRegistrationActivity.class).putExtra("edit", true));
 
-//                currentLayout.setBackgroundColor(getResources().getColor(R.color.tabbtnsbg));
-                currentViewLine.setVisibility(View.VISIBLE);
-                homeTabBtn.setImageResource(R.drawable.ic_outline_home_24_unselected);
-                profileTabBtn.setImageResource(R.drawable.ic_person_outline_24_selected);
-                settingsTabBtn.setImageResource(R.drawable.ic_outline_settings_24_unselected);
-//                utils.storeString(com.moutamid.tweetytheclone.BottomNavigationActivity.this, "current_fragment", "profile");
-
-                loadFragment(new ProfileFragment());
+//                currentViewLine.setVisibility(View.INVISIBLE);
+//                currentViewLine = profileViewLine;
+//                currentViewLine.setVisibility(View.VISIBLE);
+//                homeTabBtn.setImageResource(R.drawable.ic_outline_home_24_unselected);
+//                profileTabBtn.setImageResource(R.drawable.ic_person_outline_24_selected);
+//                settingsTabBtn.setImageResource(R.drawable.ic_outline_settings_24_unselected);
+//                loadFragment(new ProfileFragment());
 
             }
         };

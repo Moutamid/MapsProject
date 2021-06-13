@@ -1,6 +1,7 @@
 package com.moutamid.mapsproject;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +38,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
@@ -52,7 +57,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
         TextView nameTextView = rootView.findViewById(R.id.name_text_view_home);
         nameTextView.setText(utils.getStoredString(getActivity(), "usernameStr"));
 
@@ -63,6 +67,13 @@ public class HomeFragment extends Fragment {
         setHideBtn();
 
         setAlertBtn();
+
+        rootView.findViewById(R.id.contact_us_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), ContactUsActivity.class));
+            }
+        });
 
         return rootView;
     }
@@ -236,42 +247,139 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(Location location) {
 
-                ArrayList<String> nums = new ArrayList<String>();
-
-                if (!utils.getStoredString(context, "number1").equals("Error"))
-                    nums.add(utils.getStoredString(context, "number1"));
-
-                if (!utils.getStoredString(context, "number2").equals("Error"))
-                    nums.add(utils.getStoredString(context, "number2"));
-
-                if (!utils.getStoredString(context, "number3").equals("Error"))
-                    nums.add(utils.getStoredString(context, "number3"));
-
-                Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-                smsIntent.setDataAndType(Uri.parse("smsto:"),
-                        "vnd.android-dir/mms-sms");
-//                smsIntent.setData().setType();
-//                smsIntent.setType("vnd.android-dir/mms-sms");
-                smsIntent.putExtra("address", nums);
+//                ArrayList<String> nums = new ArrayList<String>();
+//
+//                if (!utils.getStoredString(context, "number1").equals("Error"))
+//                    nums.add(utils.getStoredString(context, "number1"));
+//
+//                if (!utils.getStoredString(context, "number2").equals("Error"))
+//                    nums.add(utils.getStoredString(context, "number2"));
+//
+//                if (!utils.getStoredString(context, "number3").equals("Error"))
+//                    nums.add(utils.getStoredString(context, "number3"));
+//
+//                Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+//                smsIntent.setDataAndType(Uri.parse("smsto:"),
+//                        "vnd.android-dir/mms-sms");
+////                smsIntent.setData().setType();
+////                smsIntent.setType("vnd.android-dir/mms-sms");
+//                smsIntent.putExtra("address", nums);
 
                 String smsBody = "Please help me! I'm in trouble. I'm here, " +
                         "http://maps.google.com?q=" + location.getLatitude() +
                         "," + location.getLongitude();
 
-                smsIntent.putExtra("sms_body", smsBody);
+//                smsIntent.putExtra("sms_body", smsBody);
 
+//                try {
+//                    startActivity(smsIntent);
+//                } catch (android.content.ActivityNotFoundException ex) {
+////                    Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+//                    intent.setType("text/plain");
+//                    intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
+//                    intent.putExtra(android.content.Intent.EXTRA_TEXT, smsBody);
+//                    startActivity(Intent.createChooser(intent, "Share using"));
+//                }
+//
+                showSentDialog(smsBody, progressDialog);
+
+            }
+
+            private void showSentDialog(String smsBody, ProgressDialog progressDialog) {
+                Dialog dialog = new Dialog(context);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.dialog_number_sent);
+                dialog.setCancelable(true);
+                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                layoutParams.copyFrom(dialog.getWindow().getAttributes());
+                layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+                TextView number1tv = dialog.findViewById(R.id.number_1_tv);
+                TextView number2tv = dialog.findViewById(R.id.number_2_tv);
+                TextView number3tv = dialog.findViewById(R.id.number_3_tv);
+
+                String number1String = utils.getStoredString(context, "number1");
+                String number2String = utils.getStoredString(context, "number2");
+                String number3String = utils.getStoredString(context, "number3");
+
+                if (!number1String.equals("Error"))
+                number1tv.setText(number1String);
+
+                if (!number2String.equals("Error"))
+                number2tv.setText(number2String);
+
+                if (!number3String.equals("Error"))
+                number3tv.setText(number3String);
+
+                dialog.findViewById(R.id.number_1_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // CODE HERE
+//                        String url1 = "https://api.whatsapp.com/send?phone="+number;
+
+                        if (number1String.equals("Error")) {
+                            Toast.makeText(context, "Number not found!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        String url = null;
+                        try {
+                            url = "https://api.whatsapp.com/send?phone=" + number1String + "&text=" + URLEncoder.encode(smsBody, "UTF-8");
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setData(Uri.parse(url));
+                            startActivity(i);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                dialog.findViewById(R.id.number_2_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // CODE HERE
+
+                        if (number2String.equals("Error")) {
+                            Toast.makeText(context, "Number not found!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        String url = null;
+                        try {
+                            url = "https://api.whatsapp.com/send?phone=" + number2String + "&text=" + URLEncoder.encode(smsBody, "UTF-8");
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setData(Uri.parse(url));
+                            startActivity(i);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                dialog.findViewById(R.id.number_3_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // CODE HERE
+
+                        if (number3String.equals("Error")) {
+                            Toast.makeText(context, "Number not found!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        String url = null;
+                        try {
+                            url = "https://api.whatsapp.com/send?phone=" + number3String + "&text=" + URLEncoder.encode(smsBody, "UTF-8");
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setData(Uri.parse(url));
+                            startActivity(i);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
                 progressDialog.dismiss();
-
-                try {
-                    startActivity(smsIntent);
-                } catch (android.content.ActivityNotFoundException ex) {
-//                    Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-                    intent.setType("text/plain");
-                    intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
-                    intent.putExtra(android.content.Intent.EXTRA_TEXT, smsBody);
-                    startActivity(Intent.createChooser(intent, "Share using"));
-                }
+                dialog.show();
+                dialog.getWindow().setAttributes(layoutParams);
             }
         });
 

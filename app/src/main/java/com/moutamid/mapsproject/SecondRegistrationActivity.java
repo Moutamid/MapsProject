@@ -37,13 +37,27 @@ public class SecondRegistrationActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading...");
 
+        EditText nameEditText = findViewById(R.id.name_edittext_sec);
+        EditText numberEditText = findViewById(R.id.number_edittext_sec);
+        EditText addressEditText = findViewById(R.id.address_edittext_sec);
+
+        Utils utils = new Utils();
+
+        if (getIntent().hasExtra("edit")) {
+
+            String name = utils.getStoredString(context, "usernameStr");
+            String nmbr = utils.getStoredString(context, "numberStr");
+            String address = utils.getStoredString(context, "addressStr");
+
+            nameEditText.setText(name);
+            numberEditText.setText(nmbr);
+            addressEditText.setText(address);
+
+        }
+
         findViewById(R.id.submitBtn_sec).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                EditText nameEditText = findViewById(R.id.name_edittext_sec);
-                EditText numberEditText = findViewById(R.id.number_edittext_sec);
-                EditText addressEditText = findViewById(R.id.address_edittext_sec);
 
                 if (nameEditText.getText().toString().isEmpty() || numberEditText.getText().toString().isEmpty() || addressEditText.getText().toString().isEmpty()) {
 
@@ -66,7 +80,6 @@ public class SecondRegistrationActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
 
                         if (task.isSuccessful()) {
-                            Utils utils = new Utils();
 
                             utils.storeString(context,
                                     "usernameStr", nameEditText.getText().toString());
