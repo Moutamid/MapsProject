@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MapsProject">
-        <activity android:name=".ContactUsActivity"></activity>
+        <activity android:name=".NewsActivity"></activity>
+        <activity android:name=".ContactUsActivity" />
         <activity android:name=".AddEmergencyActivity" />
         <activity android:name=".HideAppActivity" />
         <activity android:name=".ViewSubmissionsActivity" />

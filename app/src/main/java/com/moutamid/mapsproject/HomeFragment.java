@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.Settings;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -72,6 +73,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), ContactUsActivity.class));
+            }
+        });
+
+        rootView.findViewById(R.id.news_layout_home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
             }
         });
 
@@ -305,13 +315,13 @@ public class HomeFragment extends Fragment {
                 String number3String = utils.getStoredString(context, "number3");
 
                 if (!number1String.equals("Error"))
-                number1tv.setText(number1String);
+                    number1tv.setText(number1String);
 
                 if (!number2String.equals("Error"))
-                number2tv.setText(number2String);
+                    number2tv.setText(number2String);
 
                 if (!number3String.equals("Error"))
-                number3tv.setText(number3String);
+                    number3tv.setText(number3String);
 
                 dialog.findViewById(R.id.number_1_btn).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -324,17 +334,20 @@ public class HomeFragment extends Fragment {
                             return;
                         }
 
-                        String url = null;
-                        try {
-                            url = "https://api.whatsapp.com/send?phone=" + number1String + "&text=" + URLEncoder.encode(smsBody, "UTF-8");
-                            Intent i = new Intent(Intent.ACTION_VIEW);
-                            i.setData(Uri.parse(url));
-                            startActivity(i);
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
+                        sendTextMessage(number1String, smsBody);
+
+//                        String url = null;
+//                        try {
+//                            url = "https://api.whatsapp.com/send?phone=" + number1String + "&text=" + URLEncoder.encode(smsBody, "UTF-8");
+//                            Intent i = new Intent(Intent.ACTION_VIEW);
+//                            i.setData(Uri.parse(url));
+//                            startActivity(i);
+//                        } catch (UnsupportedEncodingException e) {
+//                            e.printStackTrace();
+//                        }
                     }
                 });
+
                 dialog.findViewById(R.id.number_2_btn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -345,15 +358,17 @@ public class HomeFragment extends Fragment {
                             return;
                         }
 
-                        String url = null;
-                        try {
-                            url = "https://api.whatsapp.com/send?phone=" + number2String + "&text=" + URLEncoder.encode(smsBody, "UTF-8");
-                            Intent i = new Intent(Intent.ACTION_VIEW);
-                            i.setData(Uri.parse(url));
-                            startActivity(i);
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
+                        sendTextMessage(number2String, smsBody);
+
+//                        String url = null;
+//                        try {
+//                            url = "https://api.whatsapp.com/send?phone=" + number2String + "&text=" + URLEncoder.encode(smsBody, "UTF-8");
+//                            Intent i = new Intent(Intent.ACTION_VIEW);
+//                            i.setData(Uri.parse(url));
+//                            startActivity(i);
+//                        } catch (UnsupportedEncodingException e) {
+//                            e.printStackTrace();
+//                        }
                     }
                 });
                 dialog.findViewById(R.id.number_3_btn).setOnClickListener(new View.OnClickListener() {
@@ -366,15 +381,17 @@ public class HomeFragment extends Fragment {
                             return;
                         }
 
-                        String url = null;
-                        try {
-                            url = "https://api.whatsapp.com/send?phone=" + number3String + "&text=" + URLEncoder.encode(smsBody, "UTF-8");
-                            Intent i = new Intent(Intent.ACTION_VIEW);
-                            i.setData(Uri.parse(url));
-                            startActivity(i);
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
+                        sendTextMessage(number3String, smsBody);
+
+//                        String url = null;
+//                        try {
+//                            url = "https://api.whatsapp.com/send?phone=" + number3String + "&text=" + URLEncoder.encode(smsBody, "UTF-8");
+//                            Intent i = new Intent(Intent.ACTION_VIEW);
+//                            i.setData(Uri.parse(url));
+//                            startActivity(i);
+//                        } catch (UnsupportedEncodingException e) {
+//                            e.printStackTrace();
+//                        }
                     }
                 });
                 progressDialog.dismiss();
@@ -390,6 +407,21 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    private void sendTextMessage(String numbStr, String smsBody1) {
+
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(numbStr, null, smsBody1, null, null);
+            Toast.makeText(getActivity(), "Message sent", Toast.LENGTH_SHORT).show();
+        } catch (final Exception exception) {
+
+            Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_SHORT).show();
+            exception.printStackTrace();
+        }
+
 
     }
 
