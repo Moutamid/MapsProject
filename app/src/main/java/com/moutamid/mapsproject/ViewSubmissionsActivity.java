@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -176,6 +178,16 @@ public class ViewSubmissionsActivity extends AppCompatActivity {
             holder.nameTv.setText(locationModel.getName());
             holder.dateTimeTv.setText(locationModel.getDateTime());
 
+            holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ViewSubmissionsActivity.this, MapsActivity.class);
+                    intent.putExtra("lat", locationModel.getLatitude());
+                    intent.putExtra("long", locationModel.getLongitude());
+                    startActivity(intent);
+                }
+            });
+
         }
 
         @Override
@@ -188,11 +200,13 @@ public class ViewSubmissionsActivity extends AppCompatActivity {
         public class ViewHolderRightMessage extends ViewHolder {
 
             TextView dateTimeTv, nameTv, cityNameTv, latitudeTv, longitudeTv;
+            LinearLayout parentLayout;
 
             public ViewHolderRightMessage(@NonNull View v) {
                 super(v);
                 dateTimeTv = v.findViewById(R.id.dateTimeTvLayout);
                 nameTv = v.findViewById(R.id.nameTvLayout);
+                parentLayout = v.findViewById(R.id.parent_layout_submissions);
                 cityNameTv = v.findViewById(R.id.cityNameTvLayout);
                 latitudeTv = v.findViewById(R.id.latitudeTvLayout);
                 longitudeTv = v.findViewById(R.id.longitudeTvLayout);

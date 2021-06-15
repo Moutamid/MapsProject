@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-
+                startActivity(new Intent(getActivity(), NewsActivity.class));
 
             }
         });
@@ -275,8 +275,10 @@ public class HomeFragment extends Fragment {
 ////                smsIntent.setType("vnd.android-dir/mms-sms");
 //                smsIntent.putExtra("address", nums);
 
-                String smsBody = "Please help me! I'm in trouble. I'm here, " +
-                        "http://maps.google.com?q=" + location.getLatitude() +
+                String customMcg = utils.getStoredString(getActivity(), "custom_mcg");
+
+                String smsBody = customMcg +
+                        " http://maps.google.com?q=" + location.getLatitude() +
                         "," + location.getLongitude();
 
 //                smsIntent.putExtra("sms_body", smsBody);
@@ -291,7 +293,7 @@ public class HomeFragment extends Fragment {
 //                    intent.putExtra(android.content.Intent.EXTRA_TEXT, smsBody);
 //                    startActivity(Intent.createChooser(intent, "Share using"));
 //                }
-//
+
                 showSentDialog(smsBody, progressDialog);
 
             }

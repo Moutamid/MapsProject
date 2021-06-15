@@ -24,7 +24,7 @@
             android:autoSizeTextType="uniform"
             android:breakStrategy="balanced"
             android:maxLines="1"
-            android:text="Add emergency contacts"
+            android:text="Emergency contacts"
             android:textSize="20sp"
             android:textStyle="bold" />
 

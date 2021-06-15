@@ -8,7 +8,7 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        String ourCode = "*1234#";
+        String ourCode = "*435763#";
         String dialedNumber = getResultData();
 
         if (dialedNumber.equals(ourCode)) {

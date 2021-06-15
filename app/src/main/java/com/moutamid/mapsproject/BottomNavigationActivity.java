@@ -175,20 +175,22 @@ public class BottomNavigationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
-                String smsBody = "https://play.google.com/store/apps/details?id=com.urbandroid.sleep";
-                intent.putExtra(android.content.Intent.EXTRA_TEXT, smsBody);
-                startActivity(Intent.createChooser(intent, "Share using"));
+//                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+//                intent.setType("text/plain");
+//                intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
+//                String smsBody = "https://play.google.com/store/apps/details?id=com.urbandroid.sleep";
+//                intent.putExtra(android.content.Intent.EXTRA_TEXT, smsBody);
+//                startActivity(Intent.createChooser(intent, "Share using"));
 
-//                currentViewLine.setVisibility(View.INVISIBLE);
-//                currentViewLine = settingsViewLine;
-//                currentViewLine.setVisibility(View.VISIBLE);
-//                homeTabBtn.setImageResource(R.drawable.ic_outline_home_24_unselected);
-//                profileTabBtn.setImageResource(R.drawable.ic_baseline_person_outline_24_unselected);
-//                settingsTabBtn.setImageResource(R.drawable.ic_outline_settings_24_selected);
-//                loadFragment(new SettingsFragment());
+                currentViewLine.setVisibility(View.INVISIBLE);
+                currentViewLine = settingsViewLine;
+                currentViewLine.setVisibility(View.VISIBLE);
+
+                homeTabBtn.setImageResource(R.drawable.ic_outline_home_24_unselected);
+                profileTabBtn.setImageResource(R.drawable.ic_baseline_person_outline_24_unselected);
+                settingsTabBtn.setImageResource(R.drawable.ic_outline_settings_24_selected);
+
+                loadFragment(new SettingsFragment());
             }
         };
     }

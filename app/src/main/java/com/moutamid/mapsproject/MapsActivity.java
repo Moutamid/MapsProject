@@ -192,8 +192,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 }
 
+                if (getIntent().hasExtra("lat")) {
+
+                    LatLng latLng1 = new LatLng(
+                            getIntent().getDoubleExtra("lat", 0.0),
+                            getIntent().getDoubleExtra("long", 0.0));
+
+                    CameraUpdate cameraUpdate1 = CameraUpdateFactory.newLatLngZoom(latLng1, 12);//25
+                    mMap.animateCamera(cameraUpdate1);
+
+                    progressDialog.dismiss();
+
+                    return;
+                }
+
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12);//25
                 mMap.animateCamera(cameraUpdate);
+
                 progressDialog.dismiss();
             }
 

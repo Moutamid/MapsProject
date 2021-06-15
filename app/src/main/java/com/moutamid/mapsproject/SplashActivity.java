@@ -11,10 +11,17 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashActivity extends AppCompatActivity {
 
+    private Utils utils = new Utils();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        if (!utils.getStoredBoolean(SplashActivity.this, "firstTimeO")){
+            utils.storeString(SplashActivity.this, "custom_mcg", "Please help me! I'm in trouble. I'm here,");
+            utils.storeBoolean(SplashActivity.this, "firstTimeO", true);
+        }
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -44,4 +51,7 @@ public class SplashActivity extends AppCompatActivity {
 //        startActivity(new Intent(this, .class));
 
     }
+
+
+
 }
