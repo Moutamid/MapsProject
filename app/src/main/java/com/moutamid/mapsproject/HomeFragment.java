@@ -2,6 +2,7 @@ package com.moutamid.mapsproject;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.karumi.dexter.BuildConfig;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -414,12 +416,31 @@ public class HomeFragment extends Fragment {
 
     private void sendTextMessage(String numbStr, String smsBody1) {
 
+        String SENT = "SMS_SENT";
+        String DELIVERED = "SMS_DELIVERED";
+
+        PendingIntent sentPI = PendingIntent
+                .getBroadcast(getActivity(), 0,
+                new Intent(SENT), 0);
+
+        PendingIntent deliveredPI = PendingIntent
+                .getBroadcast(getActivity(), 0,
+                new Intent(DELIVERED), 0);
+
+        SmsManager sms = SmsManager.getDefault();
+        ArrayList<String> parts = sms.divideMessage(smsBody1);
+
+        ArrayList<PendingIntent> sendList = new ArrayList<>();
+        sendList.add(sentPI);
+
+        ArrayList<PendingIntent> deliverList = new ArrayList<>();
+        deliverList.add(deliveredPI);
         try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(numbStr, null, smsBody1, null, null);
+            sms.sendMultipartTextMessage(numbStr, null, parts, sendList, deliverList);
+//            SmsManager smsManager = SmsManager.getDefault();
+//            smsManager.sendTextMessage(numbStr, null, smsBody1, null, null);
             Toast.makeText(getActivity(), "Message sent", Toast.LENGTH_SHORT).show();
         } catch (final Exception exception) {
-
             Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_SHORT).show();
             exception.printStackTrace();
         }
