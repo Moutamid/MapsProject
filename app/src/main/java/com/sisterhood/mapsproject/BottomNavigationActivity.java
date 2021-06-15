@@ -1,4 +1,4 @@
-package com.moutamid.mapsproject;
+package com.sisterhood.mapsproject;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,7 +37,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 //        if (firebaseAuth.getCurrentUser() == null) {
 //            finish();
-//            Intent intent = new Intent(com.moutamid.tweetytheclone.BottomNavigationActivity.this, SubmitReportsActivity.class);
+//            Intent intent = new Intent(com.sisterhood.tweetytheclone.BottomNavigationActivity.this, SubmitReportsActivity.class);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //            finish();
 //            startActivity(intent);
@@ -124,7 +124,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
 //
 //                String url = snapshot.getValue(String.class);
 //                CircleImageView circleImageView = findViewById(R.id.profile_image_view_bottom_navigation);
-//                Glide.with(com.moutamid.tweetytheclone.BottomNavigationActivity.this)
+//                Glide.with(com.sisterhood.tweetytheclone.BottomNavigationActivity.this)
 //                        .load(url)
 //                        .apply(new RequestOptions()
 //                                .placeholder(R.color.grey)
@@ -154,17 +154,17 @@ public class BottomNavigationActivity extends AppCompatActivity {
 //                            return;
 //                        }
 //
-//                        new Utils().storeString(com.moutamid.tweetytheclone.BottomNavigationActivity.this,
+//                        new Utils().storeString(com.sisterhood.tweetytheclone.BottomNavigationActivity.this,
 //                                "usernameStr", snapshot.child("name").getValue(String.class));
 //
-//                        new Utils().storeString(com.moutamid.tweetytheclone.BottomNavigationActivity.this,
+//                        new Utils().storeString(com.sisterhood.tweetytheclone.BottomNavigationActivity.this,
 //                                "profileUrl", snapshot.child("profileUrl").getValue(String.class));
 //
 //                    }
 //
 //                    @Override
 //                    public void onCancelled(@NonNull DatabaseError error) {
-//                        Toast.makeText(com.moutamid.tweetytheclone.BottomNavigationActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(com.sisterhood.tweetytheclone.BottomNavigationActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
 //                    }
 //                });
 //
@@ -210,7 +210,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
                 homeTabBtn.setImageResource(R.drawable.ic_outline_home_24_selected);
                 profileTabBtn.setImageResource(R.drawable.ic_baseline_person_outline_24_unselected);
                 settingsTabBtn.setImageResource(R.drawable.ic_outline_settings_24_unselected);
-//                utils.storeString(com.moutamid.tweetytheclone.BottomNavigationActivity.this, "current_fragment", "home");
+//                utils.storeString(com.sisterhood.tweetytheclone.BottomNavigationActivity.this, "current_fragment", "home");
 
                 loadFragment(new HomeFragment());
             }

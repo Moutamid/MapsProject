@@ -1,4 +1,4 @@
-package com.moutamid.mapsproject.models;
+package com.sisterhood.mapsproject.models;
 
 public class LocationModel1 {
 

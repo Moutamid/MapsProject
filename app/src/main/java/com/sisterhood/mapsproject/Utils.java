@@ -1,4 +1,4 @@
-package com.moutamid.mapsproject;
+package com.sisterhood.mapsproject;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class Utils {
 
-    private static final String PACKAGE_NAME = "dev.moutamid.MapsProject";
+    private static final String PACKAGE_NAME = "dev.sisterhood.MapsProject";
 
     private SharedPreferences sharedPreferences;
 

@@ -1,4 +1,4 @@
-package com.moutamid.mapsproject;
+package com.sisterhood.mapsproject;
 
 import org.junit.Test;
 

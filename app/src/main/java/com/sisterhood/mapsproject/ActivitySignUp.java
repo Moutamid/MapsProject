@@ -1,4 +1,4 @@
-package com.moutamid.mapsproject;
+package com.sisterhood.mapsproject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;

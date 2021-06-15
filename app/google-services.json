@@ -50,6 +50,51 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162460674604:android:dc402a4518aa261b0d7f89",
+        "android_client_info": {
+          "package_name": "com.sisterhood.mapsproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "162460674604-cor6pfbu8qdtd3k5gmhan4l3lfhm7ghl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sisterhood.mapsproject",
+            "certificate_hash": "592eb93dd25ca2ff6e102db0ec9d9fecf4d5d22b"
+          }
+        },
+        {
+          "client_id": "162460674604-kqb87luvci5v5fodutv8limo6pioech2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sisterhood.mapsproject",
+            "certificate_hash": "f39a3ca243502e996f2be8d87b2ec0391f576d60"
+          }
+        },
+        {
+          "client_id": "162460674604-om0p6dtf16rqvufdt30usjkgseq57j9h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq6uVyyvCbWEOeXAj_i1q3KZgeolbhzgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "162460674604-om0p6dtf16rqvufdt30usjkgseq57j9h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

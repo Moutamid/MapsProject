@@ -1,4 +1,4 @@
-package com.moutamid.mapsproject;
+package com.sisterhood.mapsproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import static android.view.LayoutInflater.from;
-import static com.moutamid.mapsproject.R.id.news_recyclerview;
+import static com.sisterhood.mapsproject.R.id.news_recyclerview;
 
 public class NewsActivity extends AppCompatActivity {
     private static final String TAG = "NewsActivity";

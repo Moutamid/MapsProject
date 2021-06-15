@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.moutamid.mapsproject",
+  "applicationId": "com.sisterhood.mapsproject",
   "variantName": "processReleaseResources",
   "elements": [
     {

@@ -1,4 +1,4 @@
-package com.moutamid.mapsproject;
+package com.sisterhood.mapsproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,12 +30,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.moutamid.mapsproject.models.LocationModel1;
+import com.sisterhood.mapsproject.models.LocationModel1;
 
 import java.util.ArrayList;
 
 import static android.view.LayoutInflater.from;
-import static com.moutamid.mapsproject.R.id.submissions_list_recyclerView;
+import static com.sisterhood.mapsproject.R.id.elastic;
+import static com.sisterhood.mapsproject.R.id.submissions_list_recyclerView;
 
 public class ViewSubmissionsActivity extends AppCompatActivity {
     private static final String TAG = "ViewSubmissionsActivity";
@@ -45,6 +46,7 @@ public class ViewSubmissionsActivity extends AppCompatActivity {
 
     private ArrayList<LocationModel1> tasksArrayList = new ArrayList<>();
     private ArrayList<LocationModel1> tasksArrayListAll = new ArrayList<>();
+    private ArrayList<String> ratingsArrayList = new ArrayList<>();
 
     private RecyclerView conversationRecyclerView;
     private RecyclerViewAdapterMessages adapter;
@@ -76,6 +78,7 @@ public class ViewSubmissionsActivity extends AppCompatActivity {
 
                 tasksArrayList.clear();
                 tasksArrayListAll.clear();
+                ratingsArrayList.clear();
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
@@ -83,16 +86,12 @@ public class ViewSubmissionsActivity extends AppCompatActivity {
 
                     tasksArrayList.add(model);
                     tasksArrayListAll.add(model);
-//                    latLng = new LatLng(model.getLatitude(), model.getLongitude());
-//                    MarkerOptions markerOptions = new MarkerOptions()
-//                            .position(latLng)
-//                            .title(model.getName())
-//                            .snippet(model.getDateTime());
-//
-//                    mMap.addMarker(markerOptions).showInfoWindow();
-//
-//                    circleOptions.center(latLng);
-//                    mMap.addCircle(circleOptions)
+
+                    if (dataSnapshot.child("rating").exists()) {
+                        ratingsArrayList.add(dataSnapshot.child("rating").getValue(String.class));
+                    } else {
+                        ratingsArrayList.add("null");
+                    }
 
                 }
 
@@ -172,6 +171,7 @@ public class ViewSubmissionsActivity extends AppCompatActivity {
 
             LocationModel1 locationModel = tasksArrayList.get(position);
 
+            holder.ratingTv.setText(ratingsArrayList.get(position));
             holder.longitudeTv.setText(locationModel.getLongitude() + "");
             holder.latitudeTv.setText(locationModel.getLatitude() + "");
             holder.cityNameTv.setText(locationModel.getCityName());
@@ -199,7 +199,7 @@ public class ViewSubmissionsActivity extends AppCompatActivity {
 
         public class ViewHolderRightMessage extends ViewHolder {
 
-            TextView dateTimeTv, nameTv, cityNameTv, latitudeTv, longitudeTv;
+            TextView dateTimeTv, nameTv, cityNameTv, latitudeTv, longitudeTv, ratingTv;
             LinearLayout parentLayout;
 
             public ViewHolderRightMessage(@NonNull View v) {
@@ -210,6 +210,7 @@ public class ViewSubmissionsActivity extends AppCompatActivity {
                 cityNameTv = v.findViewById(R.id.cityNameTvLayout);
                 latitudeTv = v.findViewById(R.id.latitudeTvLayout);
                 longitudeTv = v.findViewById(R.id.longitudeTvLayout);
+                ratingTv = v.findViewById(R.id.ratingTvLayout);
 
             }
         }

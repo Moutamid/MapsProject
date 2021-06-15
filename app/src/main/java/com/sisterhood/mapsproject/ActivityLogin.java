@@ -1,4 +1,4 @@
-package com.moutamid.mapsproject;
+package com.sisterhood.mapsproject;
 
 
 import android.app.ProgressDialog;
@@ -120,13 +120,7 @@ public class ActivityLogin extends AppCompatActivity {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-//        if (mAuth.getCurrentUser() != null) {
-//            finish();
-//            Intent intent = new Intent(ActivityLogin.this, BottomNavigationActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            startActivity(intent);
-//            return;
-//        }
+
 
         findViewById(R.id.signBtn_login).setOnClickListener(new View.OnClickListener() {
             @Override

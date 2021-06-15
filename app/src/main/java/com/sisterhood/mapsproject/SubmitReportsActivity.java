@@ -1,4 +1,4 @@
-package com.moutamid.mapsproject;
+package com.sisterhood.mapsproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -273,6 +274,8 @@ public class SubmitReportsActivity extends AppCompatActivity {
                 layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
                 layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
+                RatingBar ratingBar = dialog.findViewById(R.id.ratingBar);
+
                 dialog.findViewById(R.id.submitBtn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -281,17 +284,32 @@ public class SubmitReportsActivity extends AppCompatActivity {
 
                         LocationModel model = new LocationModel(nameString, dateTimeString, cityName, latitude, longitude);
 
-                        databaseReference.child("locations").push()
+                        String key = databaseReference.child("locations").push().getKey();
+
+                        databaseReference.child("locations").child(key)
                                 .setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                progressDialog.dismiss();
-                                dialog.dismiss();
-
                                 if (task.isSuccessful()) {
-                                    nameEditText.setText("");
-                                    Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
+                                    databaseReference.child("locations").child(key)
+                                            .child("rating")
+                                            .setValue(String.valueOf(ratingBar.getRating()))
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    progressDialog.dismiss();
+                                                    dialog.dismiss();
+
+                                                    if (task.isSuccessful()) {
+                                                        nameEditText.setText("");
+                                                        Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
                                 } else {
+                                    progressDialog.dismiss();
                                     Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
