@@ -47,6 +47,7 @@ public class ViewSubmissionsActivity extends AppCompatActivity {
     private ArrayList<LocationModel1> tasksArrayList = new ArrayList<>();
     private ArrayList<LocationModel1> tasksArrayListAll = new ArrayList<>();
     private ArrayList<String> ratingsArrayList = new ArrayList<>();
+    private ArrayList<String> descriptionsArrayList = new ArrayList<>();
 
     private RecyclerView conversationRecyclerView;
     private RecyclerViewAdapterMessages adapter;
@@ -79,6 +80,7 @@ public class ViewSubmissionsActivity extends AppCompatActivity {
                 tasksArrayList.clear();
                 tasksArrayListAll.clear();
                 ratingsArrayList.clear();
+                descriptionsArrayList.clear();
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
@@ -91,6 +93,12 @@ public class ViewSubmissionsActivity extends AppCompatActivity {
                         ratingsArrayList.add(dataSnapshot.child("rating").getValue(String.class));
                     } else {
                         ratingsArrayList.add("null");
+                    }
+
+                    if (dataSnapshot.child("desc").exists()) {
+                        descriptionsArrayList.add(dataSnapshot.child("desc").getValue(String.class));
+                    } else {
+                        descriptionsArrayList.add("null");
                     }
 
                 }
@@ -171,6 +179,7 @@ public class ViewSubmissionsActivity extends AppCompatActivity {
 
             LocationModel1 locationModel = tasksArrayList.get(position);
 
+            holder.descriptionTv.setText(descriptionsArrayList.get(position));
             holder.ratingTv.setText(ratingsArrayList.get(position));
             holder.longitudeTv.setText(locationModel.getLongitude() + "");
             holder.latitudeTv.setText(locationModel.getLatitude() + "");
@@ -199,14 +208,16 @@ public class ViewSubmissionsActivity extends AppCompatActivity {
 
         public class ViewHolderRightMessage extends ViewHolder {
 
-            TextView dateTimeTv, nameTv, cityNameTv, latitudeTv, longitudeTv, ratingTv;
+            TextView dateTimeTv, nameTv, cityNameTv, latitudeTv, longitudeTv, ratingTv, descriptionTv;
             LinearLayout parentLayout;
 
             public ViewHolderRightMessage(@NonNull View v) {
                 super(v);
                 dateTimeTv = v.findViewById(R.id.dateTimeTvLayout);
+                descriptionTv = v.findViewById(R.id.descTvLayout);
                 nameTv = v.findViewById(R.id.nameTvLayout);
                 parentLayout = v.findViewById(R.id.parent_layout_submissions);
+                cityNameTv = v.findViewById(R.id.cityNameTvLayout);
                 cityNameTv = v.findViewById(R.id.cityNameTvLayout);
                 latitudeTv = v.findViewById(R.id.latitudeTvLayout);
                 longitudeTv = v.findViewById(R.id.longitudeTvLayout);

@@ -58,10 +58,10 @@ public class SubmitReportsActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     AppCompatButton submitButton, viewButton;
-    TextInputEditText nameEditText, dateEditText;
+    TextInputEditText nameEditText, dateEditText, descriptionEditText;
     RelativeLayout locationLayout;
     TextView locationTextView;
-    String nameString, dateTimeString;
+    String nameString, dateTimeString, descriptionString;
     double latitude, longitude;
     private ProgressDialog progressDialog;
 
@@ -84,6 +84,7 @@ public class SubmitReportsActivity extends AppCompatActivity {
         viewButton = findViewById(R.id.viewSubmissionsBtn);
         nameEditText = findViewById(R.id.name_edittext);
         dateEditText = findViewById(R.id.date_edittext);
+        descriptionEditText = findViewById(R.id.desc_edittext);
         locationLayout = findViewById(R.id.location_layout);
         locationTextView = findViewById(R.id.location_textview);
 
@@ -249,6 +250,7 @@ public class SubmitReportsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 nameString = nameEditText.getText().toString();
                 dateTimeString = dateEditText.getText().toString();
+                descriptionString = descriptionEditText.getText().toString();
 
                 if (nameString.isEmpty() || nameString == null) {
                     Toast.makeText(context, "Please enter a name!", Toast.LENGTH_SHORT).show();
@@ -262,6 +264,11 @@ public class SubmitReportsActivity extends AppCompatActivity {
 
                 if (!isLocationget) {
                     Toast.makeText(context, "Please enter your location!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (descriptionString.isEmpty() || descriptionString == null) {
+                    Toast.makeText(context, "Please enter description!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -297,6 +304,11 @@ public class SubmitReportsActivity extends AppCompatActivity {
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
+
+                                                    databaseReference.child("locations").child(key)
+                                                            .child("desc")
+                                                            .setValue(descriptionString);
+
                                                     progressDialog.dismiss();
                                                     dialog.dismiss();
 
