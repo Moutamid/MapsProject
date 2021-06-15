@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +36,7 @@ public class NewsActivity extends AppCompatActivity {
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    private ArrayList<String> tasksArrayList = new ArrayList<>();
+    private ArrayList<NewsModel> newsArrayList = new ArrayList<>();
 
     private RecyclerView conversationRecyclerView;
     private RecyclerViewAdapterMessages adapter;
@@ -51,24 +51,24 @@ public class NewsActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(context);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading...");
-//        progressDialog.show();
+        progressDialog.show();
 
-        databaseReference.child("news").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("news1").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()){
+                if (!snapshot.exists()) {
                     Toast.makeText(context, "No data Exists", Toast.LENGTH_SHORT).show();
-//                    return;
+                    return;
                 }
 
-//                tasksArrayList.clear();
-//
-//                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-//                    tasksArrayList.add(dataSnapshot.getValue(String.class));
-//                }
+                newsArrayList.clear();
 
-//                initRecyclerView();
-//                progressDialog.dismiss();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    newsArrayList.add(dataSnapshot.getValue(NewsModel.class));
+                }
+//
+                initRecyclerView();
+                progressDialog.dismiss();
             }
 
             @Override
@@ -119,28 +119,79 @@ public class NewsActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull final ViewHolderRightMessage holder, int position) {
 
-            //            holder.title.setText("");
+            NewsModel model = newsArrayList.get(position);
+
+            holder.title.setText(model.getTitle());
+            holder.updated.setText(model.getLast_updated());
+
+            holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
 
         }
 
         @Override
         public int getItemCount() {
-            //            if (tasksArrayList == null)
-            return 10;
-            //            return tasksArrayList.size();
+            if (newsArrayList == null)
+                return 0;
+            return newsArrayList.size();
         }
 
         public class ViewHolderRightMessage extends ViewHolder {
 
-            //            TextView title;
+            TextView title, updated;
+            LinearLayout parentLayout;
 
             public ViewHolderRightMessage(@NonNull View v) {
                 super(v);
-                //                title = v.findViewById(R.id.titleTextview);
+                title = v.findViewById(R.id.titleTv);
+                updated = v.findViewById(R.id.updatedTv);
+                parentLayout = v.findViewById(R.id.parent_layout_news);
 
             }
         }
 
+    }
+
+    private static class NewsModel {
+
+        private String last_updated, link, title;
+
+        public NewsModel(String last_updated, String link, String title) {
+            this.last_updated = last_updated;
+            this.link = link;
+            this.title = title;
+        }
+
+        public String getLast_updated() {
+            return last_updated;
+        }
+
+        public void setLast_updated(String last_updated) {
+            this.last_updated = last_updated;
+        }
+
+        public String getLink() {
+            return link;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        NewsModel() {
+        }
     }
 
 }
