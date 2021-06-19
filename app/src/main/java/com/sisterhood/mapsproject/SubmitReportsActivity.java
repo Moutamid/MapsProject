@@ -3,10 +3,12 @@ package com.sisterhood.mapsproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +19,9 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -45,6 +49,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -53,6 +58,45 @@ public class SubmitReportsActivity extends AppCompatActivity {
     private static final String TAG = "SubmitReportsActivity";
     private Context context = SubmitReportsActivity.this;
     private Geocoder geocoder;
+
+    private void sendTextMessage(String numbStr, String smsBody1) {
+
+        String SENT = "SMS_SENT";
+        String DELIVERED = "SMS_DELIVERED";
+
+        PendingIntent sentPI = PendingIntent
+                .getBroadcast(SubmitReportsActivity.this, 0,
+                        new Intent(SENT), 0);
+
+        PendingIntent deliveredPI = PendingIntent
+                .getBroadcast(SubmitReportsActivity.this, 0,
+                        new Intent(DELIVERED), 0);
+
+        SmsManager sms = SmsManager.getDefault();
+        ArrayList<String> parts = sms.divideMessage(smsBody1);
+
+        ArrayList<PendingIntent> sendList = new ArrayList<>();
+        sendList.add(sentPI);
+
+        ArrayList<PendingIntent> deliverList = new ArrayList<>();
+        deliverList.add(deliveredPI);
+        try {
+            sms.sendMultipartTextMessage(numbStr, null, parts, sendList, deliverList);
+//            SmsManager smsManager = SmsManager.getDefault();
+//            smsManager.sendTextMessage(numbStr, null, smsBody1, null, null);
+            Toast.makeText(SubmitReportsActivity.this, "Message sent", Toast.LENGTH_SHORT).show();
+        } catch (final Exception exception) {
+            Toast.makeText(SubmitReportsActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+            exception.printStackTrace();
+        }
+
+
+    }
+
+    private static final String DOMESTIC_VIOLENCE = "Domestic Violence";
+    private static final String HARASSMENT = "Harassment";
+    private static final String SEXUAL_ASSAULT = "Sexual Assault";
+    private static final String STALKING = "Stalking";
 
     // YE LOCATION ACCESS KRNE KA OBJECT HE
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -64,6 +108,8 @@ public class SubmitReportsActivity extends AppCompatActivity {
     String nameString, dateTimeString, descriptionString;
     double latitude, longitude;
     private ProgressDialog progressDialog;
+
+    private String categoryString = null;
 
     // YE ONLINE DATABASE KA LINK HE YAHAN PAR SARA DATA STORE HOGA JO KAY BAD MEN MAPS PAR SHOW KIA JAEGA
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -102,6 +148,45 @@ public class SubmitReportsActivity extends AppCompatActivity {
             }
         });
         viewButton.setVisibility(View.GONE);
+
+        TextView textView = findViewById(R.id.categories_layout_textview);
+
+        findViewById(R.id.categories_layout_textview).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                PopupMenu popupMenu = new PopupMenu(SubmitReportsActivity.this, view);
+                popupMenu.getMenuInflater().inflate(
+                        R.menu.popup_menu_categories,
+                        popupMenu.getMenu()
+                );
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        if (menuItem.getItemId() == R.id.DOMESTIC_VIOLENCE) {
+                            categoryString = DOMESTIC_VIOLENCE;
+                            textView.setText(DOMESTIC_VIOLENCE);
+                        }
+                        if (menuItem.getItemId() == R.id.Harassment) {
+                            categoryString = HARASSMENT;
+                            textView.setText(HARASSMENT);
+                        }
+                        if (menuItem.getItemId() == R.id.SexualAssault) {
+                            categoryString = SEXUAL_ASSAULT;
+                            textView.setText(SEXUAL_ASSAULT);
+                        }
+                        if (menuItem.getItemId() == R.id.Stalking) {
+                            categoryString = STALKING;
+                            textView.setText(STALKING);
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+
+            }
+        });
+
     }
 
     private String cityName = "null";
@@ -272,6 +357,11 @@ public class SubmitReportsActivity extends AppCompatActivity {
                     return;
                 }
 
+                if (categoryString.isEmpty() || categoryString == null) {
+                    Toast.makeText(context, "Please select a category!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Dialog dialog = new Dialog(SubmitReportsActivity.this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.dialog_rating);
@@ -291,6 +381,9 @@ public class SubmitReportsActivity extends AppCompatActivity {
 
                         LocationModel model = new LocationModel(nameString, dateTimeString, cityName, latitude, longitude);
 
+                        if (categoryString.equals(SEXUAL_ASSAULT))
+                            sendTextMessage("923012345678", "A new report of Sexual Assault has been submitted!");
+
                         String key = databaseReference.child("locations").push().getKey();
 
                         databaseReference.child("locations").child(key)
@@ -308,6 +401,10 @@ public class SubmitReportsActivity extends AppCompatActivity {
                                                     databaseReference.child("locations").child(key)
                                                             .child("desc")
                                                             .setValue(descriptionString);
+
+                                                    databaseReference.child("locations").child(key)
+                                                            .child("category")
+                                                            .setValue(categoryString);
 
                                                     progressDialog.dismiss();
                                                     dialog.dismiss();

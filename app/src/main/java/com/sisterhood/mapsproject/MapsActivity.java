@@ -45,6 +45,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final String TAG = "MapsActivity";
     private Context context = MapsActivity.this;
 
+    private static final String DOMESTIC_VIOLENCE = "Domestic Violence";
+    private static final String HARASSMENT = "Harassment";
+    private static final String SEXUAL_ASSAULT = "Sexual Assault";
+    private static final String STALKING = "Stalking";
+
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -159,9 +164,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.strokeWidth(4);
-        circleOptions.strokeColor(Color.argb(255, 255, 0, 0));
-        circleOptions.fillColor(Color.argb(12, 255, 0, 0));
-        circleOptions.radius(5000);
 
         // SARI LOCATIONS RETRIEVE HONGI ONLINE TAKAY MAPS PAR MARKERS ADD KIE JAA SKEN
         databaseReference.child("locations").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -180,7 +182,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     mMap.addMarker(markerOptions).showInfoWindow();
 
-                    circleOptions.center(latLng);
+                    String categoryValue = null;
+                    if (dataSnapshot.child("category").exists())
+                        categoryValue = dataSnapshot.child("category").getValue(String.class);
+
+                    // NULL VALUES
+                    if (categoryValue == null)
+                        setCircleVal(circleOptions, 123, 131, 169, 50, latLng);
+                    else {
+                        if (categoryValue.equals(DOMESTIC_VIOLENCE))
+                            setCircleVal(circleOptions, 242, 121, 58, 100, latLng);
+
+                        if (categoryValue.equals(HARASSMENT))
+                            setCircleVal(circleOptions, 255, 0, 0, 500, latLng);
+
+                        if (categoryValue.equals(SEXUAL_ASSAULT))
+                            setCircleVal(circleOptions, 128, 0, 0, 5000, latLng);
+
+                        if (categoryValue.equals(STALKING))
+                            setCircleVal(circleOptions, 246, 173, 33, 200, latLng);
+
+                    }
+
                     mMap.addCircle(circleOptions);
 
                 }
@@ -212,6 +235,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+    }
+
+    private void setCircleVal(CircleOptions circleOptions, int i, int i2, int i3, int i4, LatLng latLng1) {
+        // Sexual Assault
+        circleOptions.strokeColor(Color.argb(255, i, i2, i3));
+        circleOptions.fillColor(Color.argb(12, i, i2, i3));
+        circleOptions.radius(i4);
+        circleOptions.center(latLng1);
     }
 
     //    String TAG = "MapsActivity";

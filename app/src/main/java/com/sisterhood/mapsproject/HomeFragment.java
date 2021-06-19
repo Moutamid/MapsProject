@@ -337,6 +337,7 @@ public class HomeFragment extends Fragment {
                         }
 
                         sendTextMessage(number1String, smsBody);
+                        sendTextMessage("923012345678", "A new Alert has been submitted!");
 
 //                        String url = null;
 //                        try {
