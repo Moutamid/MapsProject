@@ -85,7 +85,44 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        setCarFeedbackBtn();
+
+        rootView.findViewById(R.id.faq_layout_home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), FaqActivity.class));
+            }
+        });
+
         return rootView;
+    }
+
+    private void setCarFeedbackBtn() {
+        rootView.findViewById(R.id.car_feedback_layout_home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(getActivity(), view);
+                popupMenu.getMenuInflater().inflate(
+                        R.menu.car_feedback_pop_up_options,
+                        popupMenu.getMenu()
+                );
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        if (menuItem.getItemId() == R.id.new_submission_car) {
+                            startActivity(new Intent(getActivity(), SubmitCarsActivity.class));
+                        }
+
+                        if (menuItem.getItemId() == R.id.view_submissions_car) {
+                            startActivity(new Intent(getActivity(), ViewSubmissionsCarsActivity.class));
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+
+            }
+        });
     }
 
     private void setReportsBtn() {
@@ -420,11 +457,11 @@ public class HomeFragment extends Fragment {
 
         PendingIntent sentPI = PendingIntent
                 .getBroadcast(getActivity(), 0,
-                new Intent(SENT), 0);
+                        new Intent(SENT), 0);
 
         PendingIntent deliveredPI = PendingIntent
                 .getBroadcast(getActivity(), 0,
-                new Intent(DELIVERED), 0);
+                        new Intent(DELIVERED), 0);
 
         SmsManager sms = SmsManager.getDefault();
         ArrayList<String> parts = sms.divideMessage(smsBody1);

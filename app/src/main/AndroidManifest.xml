@@ -14,12 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MapsProject">
-        <activity android:name="com.sisterhood.mapsproject.NewsActivity"></activity>
-        <activity android:name="com.sisterhood.mapsproject.ContactUsActivity" />
-        <activity android:name="com.sisterhood.mapsproject.AddEmergencyActivity" />
-        <activity android:name="com.sisterhood.mapsproject.HideAppActivity" />
-        <activity android:name="com.sisterhood.mapsproject.ViewSubmissionsActivity" />
-        <activity android:name="com.sisterhood.mapsproject.SecondRegistrationActivity" />
+        <activity android:name=".FaqActivity"></activity>
+        <activity android:name=".NewsActivity" />
+        <activity android:name=".ContactUsActivity" />
+        <activity android:name=".AddEmergencyActivity" />
+        <activity android:name=".HideAppActivity" />
+        <activity android:name=".ViewSubmissionsActivity" />
+        <activity android:name=".SecondRegistrationActivity" />
         <!--
              GOOGLE MAPS KI API KEY APKO IS FILE MEN NAZAR AA JAEGI
              (See the file "res/values/google_maps_api.xml").
@@ -33,18 +34,20 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.sisterhood.mapsproject.MapsActivity"
+            android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name="com.sisterhood.mapsproject.SubmitReportsActivity" />
-        <activity android:name="com.sisterhood.mapsproject.ActivityLogin" />
-        <activity android:name="com.sisterhood.mapsproject.ActivitySignUp" />
-        <activity android:name="com.sisterhood.mapsproject.BottomNavigationActivity" />
+        <activity android:name=".SubmitReportsActivity" />
+        <activity android:name=".SubmitCarsActivity" />
+        <activity android:name=".ViewSubmissionsCarsActivity" />
+        <activity android:name=".ActivityLogin" />
+        <activity android:name=".ActivitySignUp" />
+        <activity android:name=".BottomNavigationActivity" />
         <!--
             android:configChanges="uiMode"
 THIS LINE IS NECESSARY FOR DARK MODE WITH OUT ANIMATION
         -->
         <activity
-            android:name="com.sisterhood.mapsproject.SplashActivity"
+            android:name=".SplashActivity"
             android:configChanges="uiMode"
             android:noHistory="true"
             android:theme="@style/SplashTheme">
@@ -55,7 +58,7 @@ THIS LINE IS NECESSARY FOR DARK MODE WITH OUT ANIMATION
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.sisterhood.mapsproject.MyBroadCastReceiver">
+        <receiver android:name=".MyBroadCastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>
