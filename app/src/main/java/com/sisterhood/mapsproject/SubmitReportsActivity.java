@@ -151,7 +151,7 @@ public class SubmitReportsActivity extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.categories_layout_textview);
 
-        findViewById(R.id.categories_layout_textview).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.categories_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
