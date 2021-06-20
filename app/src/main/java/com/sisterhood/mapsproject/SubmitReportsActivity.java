@@ -382,7 +382,7 @@ public class SubmitReportsActivity extends AppCompatActivity {
                         LocationModel model = new LocationModel(nameString, dateTimeString, cityName, latitude, longitude);
 
                         if (categoryString.equals(SEXUAL_ASSAULT))
-                            sendTextMessage("923012345678", "A new report of Sexual Assault has been submitted!");
+                            sendTextMessage("923153202427", "A new report of Sexual Assault has been submitted!");
 
                         String key = databaseReference.child("locations").push().getKey();
 
