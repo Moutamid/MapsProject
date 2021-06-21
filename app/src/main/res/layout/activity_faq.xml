@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <RelativeLayout
                 android:id="@+id/top_layout_bottom_activity"
                 android:layout_width="match_parent"
