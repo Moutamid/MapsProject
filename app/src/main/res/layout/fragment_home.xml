@@ -613,6 +613,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+
         android:layout_marginBottom="55dp"
         android:background="@drawable/bg_get_started_btn_red"
         android:elevation="20dp"
