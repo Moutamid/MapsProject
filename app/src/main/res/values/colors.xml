@@ -43,7 +43,7 @@
     <color name="transparentWhiteOther">#99ffffff</color>
     <color name="transparentWhite">#10ffffff</color>
     <color name="forestGreen">#265a51</color>
-    <color name="green">#32cd32</color>
+    <color name="redCustom">#de3131</color>
     <color name="red">#ea1414</color>
     <color name="lightRed">#de3131</color>
     <color name="lighterRed">#e39696</color>

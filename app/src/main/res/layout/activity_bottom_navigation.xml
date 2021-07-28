@@ -45,7 +45,7 @@
                 android:layout_height="7dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:background="@color/green"
+                android:background="@color/redCustom"
                 android:visibility="invisible" />
 
         </RelativeLayout>
@@ -72,7 +72,7 @@
                 android:layout_height="7dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:background="@color/green" />
+                android:background="@color/redCustom" />
 
         </RelativeLayout>
 

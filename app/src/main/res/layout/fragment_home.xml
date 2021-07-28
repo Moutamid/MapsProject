@@ -380,7 +380,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/bg_get_started_btn_red"
-                    android:text="Alert!"
+                    android:text="SOS"
                     android:textColor="@color/white" />
 
             </LinearLayout>

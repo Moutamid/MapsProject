@@ -50,7 +50,7 @@
         android:gravity="start|center_vertical"
         android:text="My number here"
         app:drawableStartCompat="@drawable/ic_baseline_dialpad_24"
-        app:drawableTint="@color/green" />
+        app:drawableTint="@color/redCustom" />
 
     <TextView
         android:layout_width="match_parent"
@@ -62,6 +62,6 @@
         android:gravity="start|center_vertical"
         android:text="My message here"
         app:drawableStartCompat="@drawable/ic_baseline_message_24"
-        app:drawableTint="@color/green" />
+        app:drawableTint="@color/redCustom" />
 
 </LinearLayout>
