@@ -59,40 +59,6 @@ public class SubmitReportsActivity extends AppCompatActivity {
     private Context context = SubmitReportsActivity.this;
     private Geocoder geocoder;
 
-    private void sendTextMessage(String numbStr, String smsBody1) {
-
-        String SENT = "SMS_SENT";
-        String DELIVERED = "SMS_DELIVERED";
-
-        PendingIntent sentPI = PendingIntent
-                .getBroadcast(SubmitReportsActivity.this, 0,
-                        new Intent(SENT), 0);
-
-        PendingIntent deliveredPI = PendingIntent
-                .getBroadcast(SubmitReportsActivity.this, 0,
-                        new Intent(DELIVERED), 0);
-
-        SmsManager sms = SmsManager.getDefault();
-        ArrayList<String> parts = sms.divideMessage(smsBody1);
-
-        ArrayList<PendingIntent> sendList = new ArrayList<>();
-        sendList.add(sentPI);
-
-        ArrayList<PendingIntent> deliverList = new ArrayList<>();
-        deliverList.add(deliveredPI);
-        try {
-            sms.sendMultipartTextMessage(numbStr, null, parts, sendList, deliverList);
-//            SmsManager smsManager = SmsManager.getDefault();
-//            smsManager.sendTextMessage(numbStr, null, smsBody1, null, null);
-            Toast.makeText(SubmitReportsActivity.this, "Message sent", Toast.LENGTH_SHORT).show();
-        } catch (final Exception exception) {
-            Toast.makeText(SubmitReportsActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-            exception.printStackTrace();
-        }
-
-
-    }
-
     private static final String DOMESTIC_VIOLENCE = "Domestic Violence";
     private static final String HARASSMENT = "Harassment";
     private static final String SEXUAL_ASSAULT = "Sexual Assault";
@@ -504,5 +470,37 @@ public class SubmitReportsActivity extends AppCompatActivity {
         LocationModel() {
         }
     }
+    private void sendTextMessage(String numbStr, String smsBody1) {
 
+        String SENT = "SMS_SENT";
+        String DELIVERED = "SMS_DELIVERED";
+
+        PendingIntent sentPI = PendingIntent
+                .getBroadcast(SubmitReportsActivity.this, 0,
+                        new Intent(SENT), 0);
+
+        PendingIntent deliveredPI = PendingIntent
+                .getBroadcast(SubmitReportsActivity.this, 0,
+                        new Intent(DELIVERED), 0);
+
+        SmsManager sms = SmsManager.getDefault();
+        ArrayList<String> parts = sms.divideMessage(smsBody1);
+
+        ArrayList<PendingIntent> sendList = new ArrayList<>();
+        sendList.add(sentPI);
+
+        ArrayList<PendingIntent> deliverList = new ArrayList<>();
+        deliverList.add(deliveredPI);
+        try {
+            sms.sendMultipartTextMessage(numbStr, null, parts, sendList, deliverList);
+//            SmsManager smsManager = SmsManager.getDefault();
+//            smsManager.sendTextMessage(numbStr, null, smsBody1, null, null);
+            Toast.makeText(SubmitReportsActivity.this, "Message sent", Toast.LENGTH_SHORT).show();
+        } catch (final Exception exception) {
+            Toast.makeText(SubmitReportsActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+            exception.printStackTrace();
+        }
+
+
+    }
 }

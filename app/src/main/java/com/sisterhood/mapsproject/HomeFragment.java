@@ -7,15 +7,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
 import android.location.Location;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.provider.Settings;
 import android.telephony.SmsManager;
 import android.view.LayoutInflater;
@@ -24,8 +22,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
@@ -43,6 +48,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.ArrayList;
 
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class HomeFragment extends Fragment {
 
     public HomeFragment() {
@@ -55,11 +61,105 @@ public class HomeFragment extends Fragment {
     private LocationRequest locationRequest;
 //    private LinearLayout liveLocationLayout;
 
+//    private boolean whistlePlaying = false;
+//    private boolean sirenPlaying = false;
+
+    private enum Whistle {on, off}
+
+    private enum Siren {on, off}
+
+    private enum Flash {on, off}
+
+    private Whistle whistle = Whistle.off;
+    private Siren siren = Siren.off;
+    private Flash flash = Flash.off;
+    private MediaPlayer whistleMediaPlayer;
+    private MediaPlayer sirenMediaPlayer;
+
+    private void flashToggle(String command) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            CameraManager camManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
+            String cameraId = null; // Usually back camera is at 0 position.
+            try {
+                if (camManager != null) {
+                    cameraId = camManager.getCameraIdList()[0];
+                }
+                if (camManager != null) {
+                    if (command.equals("on")) {
+                        camManager.setTorchMode(cameraId, true);   // Turn ON
+                    } else {
+                        camManager.setTorchMode(cameraId, false);  // Turn OFF
+                    }
+                }
+            } catch (CameraAccessException e) {
+                e.getMessage();
+            }
+        } else {
+            Toast.makeText(getActivity(), "Not supported!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         TextView nameTextView = rootView.findViewById(R.id.name_text_view_home);
         nameTextView.setText(utils.getStoredString(getActivity(), "usernameStr"));
+
+        initMediaPlayers();
+
+        LinearLayout whistleLayout = rootView.findViewById(R.id.whistle_layout_home);
+        LinearLayout sirenLayout = rootView.findViewById(R.id.siren_layout_home);
+        LinearLayout flashLayout = rootView.findViewById(R.id.flash_layout_home);
+
+        flashLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (flash == Flash.off) {
+                    flashToggle("on");
+                    flashLayout.setBackgroundResource(R.drawable.bg_red_grid_layout_home);
+                    flash = Flash.on;
+                } else {
+                    flashToggle("off");
+                    flashLayout.setBackgroundResource(R.drawable.bg_grid_layout_home);
+                    flash = Flash.off;
+                }
+            }
+        });
+
+        whistleLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (whistle == Whistle.off) {
+                    whistleMediaPlayer.start();
+                    whistleLayout.setBackgroundResource(R.drawable.bg_red_grid_layout_home);
+                    whistle = Whistle.on;
+                } else {
+                    whistleMediaPlayer.pause();
+                    whistleLayout.setBackgroundResource(R.drawable.bg_grid_layout_home);
+                    whistle = Whistle.off;
+                }
+            }
+        });
+
+        sirenLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (siren == Siren.off) {
+                    sirenMediaPlayer.start();
+                    sirenLayout.setBackgroundResource(R.drawable.bg_red_grid_layout_home);
+                    siren = Siren.on;
+
+                } else {
+                    sirenMediaPlayer.pause();
+                    sirenLayout.setBackgroundResource(R.drawable.bg_grid_layout_home);
+                    siren = Siren.off;
+                }
+            }
+        });
 
         setLiveLocationBtn();
 
@@ -95,6 +195,20 @@ public class HomeFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void initMediaPlayers() {
+        int resID = getResources()
+                .getIdentifier("whistle", "raw",
+                        getActivity().getPackageName());
+        whistleMediaPlayer = MediaPlayer.create(getActivity(), resID);
+        whistleMediaPlayer.setLooping(true);
+
+        int resIDSiren = getResources()
+                .getIdentifier("siren", "raw",
+                        getActivity().getPackageName());
+        sirenMediaPlayer = MediaPlayer.create(getActivity(), resIDSiren);
+        sirenMediaPlayer.setLooping(true);
     }
 
     private void setCarFeedbackBtn() {

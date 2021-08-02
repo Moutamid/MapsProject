@@ -84,7 +84,8 @@ public class AddEmergencyActivity extends AppCompatActivity {
             }
 
             private boolean isValidated(String numb) {
-                return numb.substring(0, Math.min(numb.length(), 3)).equals("923");
+                return true;
+//                return numb.substring(0, Math.min(numb.length(), 3)).equals("923");
             }
         });
 
