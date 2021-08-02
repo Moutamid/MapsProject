@@ -108,6 +108,49 @@ public class HomeFragment extends Fragment {
 
         initMediaPlayers();
 
+        initToggleButtons();
+
+        setLiveLocationBtn();
+
+        setReportsBtn();
+
+        setHideBtn();
+
+        setAlertBtn();
+
+        initOtherButtons();
+
+        setCarFeedbackBtn();
+
+        return rootView;
+    }
+
+    private void initOtherButtons() {
+        rootView.findViewById(R.id.contact_us_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), ContactUsActivity.class));
+            }
+        });
+
+        rootView.findViewById(R.id.news_layout_home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(getActivity(), NewsActivity.class));
+
+            }
+        });
+
+        rootView.findViewById(R.id.faq_layout_home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), FaqActivity.class));
+            }
+        });
+    }
+
+    private void initToggleButtons() {
         LinearLayout whistleLayout = rootView.findViewById(R.id.whistle_layout_home);
         LinearLayout sirenLayout = rootView.findViewById(R.id.siren_layout_home);
         LinearLayout flashLayout = rootView.findViewById(R.id.flash_layout_home);
@@ -160,41 +203,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-
-        setLiveLocationBtn();
-
-        setReportsBtn();
-
-        setHideBtn();
-
-        setAlertBtn();
-
-        rootView.findViewById(R.id.contact_us_layout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), ContactUsActivity.class));
-            }
-        });
-
-        rootView.findViewById(R.id.news_layout_home).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                startActivity(new Intent(getActivity(), NewsActivity.class));
-
-            }
-        });
-
-        setCarFeedbackBtn();
-
-        rootView.findViewById(R.id.faq_layout_home).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), FaqActivity.class));
-            }
-        });
-
-        return rootView;
     }
 
     private void initMediaPlayers() {
