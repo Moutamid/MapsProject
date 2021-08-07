@@ -83,7 +83,7 @@
                     android:weightSum="3">
 
                     <LinearLayout
-                        android:id="@+id/live_location_layout1"
+                        android:id="@+id/policeLayoutHome"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -108,12 +108,12 @@
                             android:gravity="center"
                             android:maxLines="2"
                             android:minLines="2"
-                            android:text="Police\n100" />
+                            android:text="Police\n911" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/reports_layout_home1"
+                        android:id="@+id/ambulanceLayoutHome"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -138,12 +138,12 @@
                             android:gravity="center"
                             android:maxLines="2"
                             android:minLines="2"
-                            android:text="Ambulance\n108" />
+                            android:text="Ambulance\n911" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/hide_layout_home1"
+                        android:id="@+id/fireLayoutHome"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -168,7 +168,7 @@
                             android:gravity="center"
                             android:maxLines="2"
                             android:minLines="2"
-                            android:text="Fire\n101" />
+                            android:text="Fire\n911" />
 
                     </LinearLayout>
 

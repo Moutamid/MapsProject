@@ -16,8 +16,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.SmsManager;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -106,6 +108,8 @@ public class HomeFragment extends Fragment {
         TextView nameTextView = rootView.findViewById(R.id.name_text_view_home);
         nameTextView.setText(utils.getStoredString(getActivity(), "usernameStr"));
 
+        initPlceAmblncFreBtns();
+
         initMediaPlayers();
 
         initToggleButtons();
@@ -123,6 +127,91 @@ public class HomeFragment extends Fragment {
         setCarFeedbackBtn();
 
         return rootView;
+    }
+
+    private void initPlceAmblncFreBtns() {
+        LinearLayout policeLayout = rootView.findViewById(R.id.policeLayoutHome);
+        LinearLayout ambulanceLayout = rootView.findViewById(R.id.ambulanceLayoutHome);
+        LinearLayout fireLayout = rootView.findViewById(R.id.fireLayoutHome);
+
+        policeLayout.setOnClickListener(ClickListener("911"));
+        ambulanceLayout.setOnClickListener(ClickListener("911"));
+        fireLayout.setOnClickListener(ClickListener("911"));
+
+        policeLayout.setOnLongClickListener(LongClickListener("911"));
+        ambulanceLayout.setOnLongClickListener(LongClickListener("911"));
+        fireLayout.setOnLongClickListener(LongClickListener("911"));
+
+    }
+
+    private View.OnLongClickListener LongClickListener(String s) {
+        return new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                Context context = getActivity();
+                // LOCATION ACCESS KRNE K LIE PEHLE USER SE PERMISSION LENI HOGI
+                Dexter.withContext(context)
+                        .withPermission(Manifest.permission.SEND_SMS)
+                        .withListener(new PermissionListener() {
+                            @Override
+                            public void onPermissionGranted(PermissionGrantedResponse response) {
+
+                                sendTextMessage(s, "Please help me!");
+
+                            }
+
+                            @Override
+                            public void onPermissionDenied(PermissionDeniedResponse response) {
+                                if (response.isPermanentlyDenied()) {
+                                    // open device settings when the permission is
+                                    // denied permanently
+                                    Toast.makeText(context, "You need to provide permission!", Toast.LENGTH_SHORT).show();
+
+                                    Intent intent = new Intent();
+                                    intent.setAction(
+                                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package",
+                                            BuildConfig.APPLICATION_ID, null);
+                                    intent.setData(uri);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }
+                            }
+
+                            @Override
+                            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                                token.continuePermissionRequest();
+                            }
+                        }).check();
+
+                return true;
+            }
+        };
+    }
+
+    private View.OnClickListener ClickListener(String s) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                try {
+
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + s));
+                    startActivity(intent);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        };
     }
 
     private void initOtherButtons() {
