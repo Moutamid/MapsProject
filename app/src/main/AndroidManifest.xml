@@ -19,7 +19,13 @@
         <activity android:name=".NewsActivity" />
         <activity android:name=".ContactUsActivity" />
         <activity android:name=".AddEmergencyActivity" />
-        <activity android:name=".HideAppActivity" />
+        <activity android:name=".HideAppActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ViewSubmissionsActivity" />
         <activity android:name=".SecondRegistrationActivity" />
         <!--
@@ -52,11 +58,7 @@ THIS LINE IS NECESSARY FOR DARK MODE WITH OUT ANIMATION
             android:configChanges="uiMode"
             android:noHistory="true"
             android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <receiver android:name=".MyBroadCastReceiver">
