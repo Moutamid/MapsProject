@@ -26,7 +26,7 @@ public class HideAppActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hide_app);
 
         hideBtn();
-        registerReceiver();
+//        registerReceiver();
 
     }
 
